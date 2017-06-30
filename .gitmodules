@@ -1,3 +1,7 @@
 [submodule "Ipopt"]
 	path = Ipopt
 	url = https://github.com/ChinaQuants/Ipopt.git
+[submodule "OpenBLAS"]
+	path = OpenBLAS
+	url = https://github.com/ChinaQuants/OpenBLAS.git
+	branch = develop
