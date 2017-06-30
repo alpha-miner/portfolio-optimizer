@@ -1,0 +1,3 @@
+[submodule "Ipopt"]
+	path = Ipopt
+	url = https://github.com/ChinaQuants/Ipopt.git
