@@ -1,0 +1,13 @@
+eigen/.idea/*
+eigen/cmake/*
+eigen/cmake-build-debug/*
+eigen/cmake-build-release/*
+OpenBLAS/.idea/*
+OpenBLAS/cmake/*
+OpenBLAS/cmake-build-debug/*
+OpenBLAS/cmake-build-release/*
+.idea/*
+portfolio-optimizer/.idea/*
+portfolio-optimizer/cmake/*
+portfolio-optimizer/cmake-build-debug/*
+portfolio-optimizer/cmake-build-release/*
