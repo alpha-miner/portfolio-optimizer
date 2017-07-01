@@ -2,6 +2,7 @@
 #include <coin/IpIpoptApplication.hpp>
 #include <pfopt/utilities.hpp>
 #include <pfopt/meanvariance.hpp>
+#include <iomanip>
 
 using namespace pfopt;
 
@@ -10,6 +11,12 @@ int main() {
     VectorXd expectReturn = io::read_csv("../../../data/signal.csv");
 
     int variableNumber = varMatrix.rows();
+
+    int widths[] = { 25, 14, 14};
+    std::cout << std::setw(widths[0]) << std::left << "Scale"
+        << std::setw(widths[1]) << std::left << "Time(s)"
+        << std::setw(widths[2]) << std::left << "f(x)"
+        << std::endl;
 
     for(int n=200; n <= 3000; n += 200) {
         VectorXd bndl(n);
@@ -38,8 +45,12 @@ int main() {
         boost::chrono::time_point<boost::chrono::high_resolution_clock>
                 current = boost::chrono::high_resolution_clock::now();
 
-        double elapsed = boost::chrono::nanoseconds(current - start).count() / 1.0e6;
-        std::cout << n << ", " << elapsed << " ms" << std::endl;
+        double elapsed = boost::chrono::nanoseconds(current - start).count() / 1.0e9;
+        std::cout << std::setw(widths[0]) << std::left << n
+                << std::fixed << std::setprecision(6)
+                << std::setw(widths[1]) << std::left << elapsed
+                << std::setw(widths[2]) << std::left << mynlp->feval()
+                << std::endl;
     }
 
     return 0;
