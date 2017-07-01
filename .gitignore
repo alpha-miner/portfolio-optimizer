@@ -10,6 +10,7 @@ OpenBLAS/cmake-build-debug/*
 OpenBLAS/cmake-build-release/*
 .idea/*
 portfolio-optimizer/.idea/*
+portfolio-optimizer/build/*
 portfolio-optimizer/cmake-build-debug/*
 portfolio-optimizer/cmake-build-release/*
 .vscode/*
