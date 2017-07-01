@@ -12,10 +12,13 @@ int main() {
 
     int variableNumber = varMatrix.rows();
 
-    int widths[] = { 25, 14, 14};
+    int widths[] = { 25, 14, 14, 14, 14, 14};
     std::cout << std::setw(widths[0]) << std::left << "Scale"
         << std::setw(widths[1]) << std::left << "Time(s)"
         << std::setw(widths[2]) << std::left << "f(x)"
+        << std::setw(widths[3]) << std::left << "min(x)"
+        << std::setw(widths[4]) << std::left << "max(x)"
+        << std::setw(widths[5]) << std::left << "sum(x)"
         << std::endl;
 
     for(int n=200; n <= 3000; n += 200) {
@@ -50,6 +53,9 @@ int main() {
                 << std::fixed << std::setprecision(6)
                 << std::setw(widths[1]) << std::left << elapsed
                 << std::setw(widths[2]) << std::left << mynlp->feval()
+                << std::setw(widths[3]) << std::left << mynlp->xValue().minCoeff()
+                << std::setw(widths[4]) << std::left << mynlp->xValue().maxCoeff()
+                << std::setw(widths[5]) << std::left << mynlp->xValue().sum()
                 << std::endl;
     }
 
