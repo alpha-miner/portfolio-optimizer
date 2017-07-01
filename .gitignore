@@ -1,6 +1,10 @@
 eigen/.idea/*
 eigen/cmake-build-debug/*
 eigen/cmake-build-release/*
+eigen/build/*
+eigen/CMakeFiles/*
+eigen/include/*
+eigen/share/*
 OpenBLAS/.idea/*
 OpenBLAS/cmake-build-debug/*
 OpenBLAS/cmake-build-release/*
