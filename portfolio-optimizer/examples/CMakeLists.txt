@@ -1,1 +1,2 @@
 add_subdirectory(loadcsv)
+add_subdirectory(meanvariance)

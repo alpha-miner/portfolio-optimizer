@@ -1,10 +1,13 @@
 #ifndef pfopt_utilities_hpp
 #define pfopt_utilities_hpp
 
-#include <eigen3/Eigen/Eigen>
+#include "types.hpp"
 
-using Eigen::MatrixXd;
+namespace pfopt {
 
-MatrixXd read_csv(const std::string& filePath);
+    namespace io {
+        MatrixXd read_csv(const std::string &filePath);
+    }
+}
 
 #endif

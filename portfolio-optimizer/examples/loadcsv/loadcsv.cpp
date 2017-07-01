@@ -6,7 +6,7 @@ using namespace std;
 
 int main() {
 
-    MatrixXd table = read_csv("../../../data/20160303_10.csv");
+    MatrixXd table = pfopt::io::read_csv("../../../data/signal.csv");
     cout << table;
 
     return 0;
