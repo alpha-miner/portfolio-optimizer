@@ -12,3 +12,5 @@ OpenBLAS/cmake-build-release/*
 portfolio-optimizer/.idea/*
 portfolio-optimizer/cmake-build-debug/*
 portfolio-optimizer/cmake-build-release/*
+.vscode/*
+portfolio-optimizer/data

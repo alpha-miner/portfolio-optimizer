@@ -2,6 +2,11 @@ cmake_minimum_required (VERSION 3.0)
 
 project (pfopt)
 
+if(MSVC)
+else()
+    add_definitions(-std=c++11)
+endif()
+
 find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
