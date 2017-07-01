@@ -25,4 +25,3 @@ cd build
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/.. ..
 make clean
 make -j8
-make install

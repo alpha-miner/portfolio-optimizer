@@ -13,5 +13,7 @@ portfolio-optimizer/.idea/*
 portfolio-optimizer/build/*
 portfolio-optimizer/cmake-build-debug/*
 portfolio-optimizer/cmake-build-release/*
+portfolio-optimizer/bin
+portfolio-optimizer/lib
 .vscode/*
 portfolio-optimizer/data
