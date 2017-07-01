@@ -28,7 +28,7 @@ int main() {
 
         VectorXd bndu(n);
         for (int i = 0; i != n; ++i)
-            bndu[i] = 1. / n * 30;
+            bndu[i] = 0.2;
 
         boost::chrono::time_point<boost::chrono::high_resolution_clock>
                 start = boost::chrono::high_resolution_clock::now();

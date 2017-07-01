@@ -3,8 +3,8 @@
 
 namespace pfopt {
 
-    MeanVariance::MeanVariance(const VectorXd &expectReturn, const MatrixXd &varMatrix, double lambda)
-    : expectReturn_(expectReturn), varMatrix_(varMatrix), lambda_(lambda)
+    MeanVariance::MeanVariance(const VectorXd &expectReturn, const MatrixXd &varMatrix, double riskAversion)
+    : expectReturn_(expectReturn), varMatrix_(varMatrix), riskAversion_(riskAversion), feval_(0.)
     {
         assert(expectReturn_.size() == varMatrix.rows());
         assert(varMatrix.rows() == varMatrix.cols());
@@ -58,8 +58,8 @@ namespace pfopt {
         for (int i = 0; i < numOfAssets_; ++i) xReal_(i) = x[i];
         // risk grad
         VectorXd riskGrad = varMatrix_ * xReal_;
-        obj_value = 0.5 * lambda_ * xReal_.dot(riskGrad) - expectReturn_.dot(xReal_);
-        grad_f_ = lambda_ * riskGrad - expectReturn_;
+        obj_value = 0.5 * riskAversion_ * xReal_.dot(riskGrad) - expectReturn_.dot(xReal_);
+        grad_f_ = riskAversion_ * riskGrad - expectReturn_;
         return true;
     }
     bool MeanVariance::eval_grad_f(Index n, const Number* x, bool new_x, Number* grad_f)
@@ -68,20 +68,20 @@ namespace pfopt {
             for (int i = 0; i < numOfAssets_; ++i) xReal_(i) = x[i];
             // risk grad
             VectorXd riskGrad = varMatrix_ * xReal_;
-            grad_f_ = lambda_ * riskGrad - expectReturn_;
+            grad_f_ = riskAversion_ * riskGrad - expectReturn_;
             for (int i = 0; i < numOfAssets_; ++i)
             {
                 grad_f[i] = grad_f_(i);
             }
         }
         else
-            for (Index i = 0; i < n; ++i) grad_f[i] = grad_f_(i);
+            for (Index i = 0; i < numOfAssets_; ++i) grad_f[i] = grad_f_(i);
         return true;
     }
     bool MeanVariance::eval_g(Index n, const Number* x, bool new_x, Index m, Number* g)
     {
         g[0] = 0.;
-        for (Index i = 0; i < n; ++i)
+        for (Index i = 0; i < numOfAssets_; ++i)
             g[0] += x[i];
         return true;
     }
@@ -114,7 +114,7 @@ namespace pfopt {
                                         const IpoptData* ip_data,
                                         IpoptCalculatedQuantities* ip_cq)
     {
-        for (Index i = 0; i < n; ++i)
+        for (Index i = 0; i < numOfAssets_; ++i)
             x_[i] = x[i];
         feval_ = obj_value;
     }

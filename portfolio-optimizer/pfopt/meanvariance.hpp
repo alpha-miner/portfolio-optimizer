@@ -18,7 +18,7 @@ namespace pfopt {
     public:
         MeanVariance(const VectorXd &expectReturn,
                      const MatrixXd &varMatrix,
-                     double lambda=1.);
+                     double riskAversion=1.);
 
         bool setBoundedConstraint(const VectorXd& lb, const VectorXd& ub);
 
@@ -58,7 +58,7 @@ namespace pfopt {
         MatrixXd varMatrix_;
         int numOfAssets_;
         VectorXd xReal_;
-        double lambda_;
+        double riskAversion_;
 
         VectorXd lb_;
         VectorXd ub_;
