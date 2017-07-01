@@ -11,7 +11,7 @@ else()
 
     include_directories(${CMAKE_CURRENT_SOURCE_DIR})
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../Ipopt/include)
-    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../eigen/include)
+    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../eigen/include/eigen3)
 
     link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../OpenBLAS/lib)
     link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../Ipopt/lib)
