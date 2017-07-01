@@ -18,3 +18,14 @@ sudo apt-get install cmake libboost-all-dev
 ```bash
 ./build_linux.sh
 ```
+
+会在 portfolio-optimizer/portfolio-optimizer/bin 文件夹下生成可执行文件。
+
+### Windows
+
+
+```bash
+./build_windows.bat
+```
+
+进入 portfolio-optimizer/portfolio-optimizer/build 文件夹下由Visual Studio项目文件。
