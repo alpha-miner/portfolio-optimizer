@@ -6,7 +6,7 @@
 namespace pfopt {
 
     namespace io {
-        MatrixXd read_csv(const std::string &filePath);
+		PFOPT_API MatrixXd read_csv(const std::string &filePath);
     }
 }
 

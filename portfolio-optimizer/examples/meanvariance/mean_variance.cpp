@@ -29,7 +29,7 @@ int main() {
         Ipopt::SmartPtr<MeanVariance> mynlp = new MeanVariance(expectReturn_sub, varMatrix_sub);
         mynlp->setBoundedConstraint(bndl, bndu);
         Ipopt::SmartPtr<Ipopt::IpoptApplication> app = IpoptApplicationFactory();
-        app->Options()->SetNumericValue("tol", 1e-6);
+        app->Options()->SetNumericValue("tol", 1e-8);
         app->Options()->SetIntegerValue("print_level", 0);
         app->Options()->SetStringValue("linear_solver", "ma27");
         app->Options()->SetStringValue("hessian_approximation", "limited-memory");

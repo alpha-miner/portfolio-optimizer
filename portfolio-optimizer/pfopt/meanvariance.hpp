@@ -13,7 +13,7 @@ using Ipopt::IpoptCalculatedQuantities;
 
 namespace pfopt {
 
-    class MeanVariance : public TNLP {
+	class PFOPT_CLASS MeanVariance : public TNLP {
 
     public:
         MeanVariance(const VectorXd &expectReturn,
