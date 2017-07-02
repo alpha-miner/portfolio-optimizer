@@ -7,8 +7,14 @@
 using namespace pfopt;
 
 int main() {
-    MatrixXd varMatrix = io::read_csv("../../../data/sec_cov_values.csv");
-    VectorXd expectReturn = io::read_csv("../../../data/signal.csv");
+
+    std::string dataFolder;
+
+    std::cout << "Please input data floder path: ";
+    std::cin >> dataFolder;
+
+    MatrixXd varMatrix = io::read_csv(dataFolder + "/sec_cov_values.csv");
+    VectorXd expectReturn = io::read_csv(dataFolder + "/signal.csv");
 
     int variableNumber = varMatrix.rows();
 
@@ -28,7 +34,7 @@ int main() {
 
         VectorXd bndu(n);
         for (int i = 0; i != n; ++i)
-            bndu[i] = 0.2;
+            bndu[i] = 0.01;
 
         boost::chrono::time_point<boost::chrono::high_resolution_clock>
                 start = boost::chrono::high_resolution_clock::now();
@@ -48,7 +54,7 @@ int main() {
         boost::chrono::time_point<boost::chrono::high_resolution_clock>
                 current = boost::chrono::high_resolution_clock::now();
 
-        double elapsed = boost::chrono::nanoseconds(current - start).count() / 1.0e9;
+        double elapsed = boost::chrono::nanoseconds(current - start).count() / 1.0e6;
         std::cout << std::setw(widths[0]) << std::left << n
                 << std::fixed << std::setprecision(6)
                 << std::setw(widths[1]) << std::left << elapsed
