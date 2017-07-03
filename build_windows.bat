@@ -1,6 +1,7 @@
 @echo off
 
-set BUILD_TYPE=RELEASE
+set BUILD_TYPE=Release
+set BOOST_ROOT=d:\dev\boost_1_64_0
 
 cd portfolio-optimizer
 

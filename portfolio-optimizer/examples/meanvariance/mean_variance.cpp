@@ -13,8 +13,8 @@ int main() {
     std::cout << "Please input data floder path: ";
     std::cin >> dataFolder;
 
-    MatrixXd varMatrix = io::read_csv(dataFolder + "/sec_cov_values.csv");
-    VectorXd expectReturn = io::read_csv(dataFolder + "/signal.csv");
+    MatrixXd varMatrix = io::read_csv(dataFolder + "/sec_cov_values_small.csv");
+    VectorXd expectReturn = io::read_csv(dataFolder + "/signal_small.csv");
 
     int variableNumber = varMatrix.rows();
 
@@ -27,7 +27,7 @@ int main() {
         << std::setw(widths[5]) << std::left << "sum(x)"
         << std::endl;
 
-    for(int n=200; n <= 3000; n += 200) {
+    for(int n=200; n <= variableNumber; n += 200) {
         VectorXd bndl(n);
         for (int i = 0; i != n; ++i)
             bndl[i] = 0.0;

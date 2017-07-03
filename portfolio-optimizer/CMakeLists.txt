@@ -22,7 +22,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 if(MSVC)
     add_definitions(-DPFOPF_EXPORTS)
 
-    set(IPOPT_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../Ipopt/windows/lib)
+    set(IPOPT_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../Ipopt/windows/lib/${CMAKE_BUILD_TYPE})
     set(BOOST_LIB_DIR $ENV{BOOST_ROOT}/stage/lib)
     set(LIBRARY_BIN_OUTOUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 
