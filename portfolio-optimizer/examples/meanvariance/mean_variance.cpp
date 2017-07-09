@@ -13,14 +13,14 @@ int main() {
     std::cout << "Please input data floder path: ";
     std::cin >> dataFolder;
 
-    MatrixXd varMatrix = io::read_csv(dataFolder + "/sec_cov_values_small.csv");
-    VectorXd expectReturn = io::read_csv(dataFolder + "/signal_small.csv");
+    MatrixXd varMatrix = io::read_csv(dataFolder + "/sec_cov_values.csv");
+    VectorXd expectReturn = io::read_csv(dataFolder + "/signal.csv");
 
     int variableNumber = varMatrix.rows();
 
     int widths[] = { 25, 14, 14, 14, 14, 14};
     std::cout << std::setw(widths[0]) << std::left << "Scale"
-        << std::setw(widths[1]) << std::left << "Time(s)"
+        << std::setw(widths[1]) << std::left << "Time(ms)"
         << std::setw(widths[2]) << std::left << "f(x)"
         << std::setw(widths[3]) << std::left << "min(x)"
         << std::setw(widths[4]) << std::left << "max(x)"
@@ -48,7 +48,7 @@ int main() {
         app->Options()->SetNumericValue("tol", 1e-8);
         app->Options()->SetIntegerValue("print_level", 0);
         app->Options()->SetStringValue("linear_solver", "ma27");
-        app->Options()->SetStringValue("hessian_approximation", "limited-memory");
+        //app->Options()->SetStringValue("hessian_approximation", "limited-memory");
         Ipopt::ApplicationReturnStatus status = app->Initialize();
         status = app->OptimizeTNLP(mynlp);
         boost::chrono::time_point<boost::chrono::high_resolution_clock>
