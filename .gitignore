@@ -17,3 +17,9 @@ portfolio-optimizer/bin
 portfolio-optimizer/lib
 .vscode/*
 portfolio-optimizer/data
+alglib/cmake-build-debug/*
+alglib/cmake-build-release/*
+alglib/build/*
+alglib/bin/*
+alglib/lib/*
+alglib/.idea/*

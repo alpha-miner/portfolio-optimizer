@@ -36,4 +36,42 @@ namespace pfopt {
             return res;
         }
     }
+
+    double min(const real_1d_array& array, int n)
+    {
+        double minimum = 1e308;
+        if (n == 0)
+            n = array.length();
+        for (int i = 0; i != n; ++i)
+        {
+            if (array[i] < minimum)
+                minimum = array[i];
+        }
+        return minimum;
+    }
+
+    double max(const real_1d_array& array, int n)
+    {
+        double maximum = 1e-308;
+        if (n == 0)
+            n = array.length();
+        for (int i = 0; i != n; ++i)
+        {
+            if (array[i] > maximum)
+                maximum = array[i];
+        }
+        return maximum;
+    }
+
+    double sum(const real_1d_array& array, int n)
+    {
+        double sumValue = 0.0;
+        if (n == 0)
+            n = array.length();
+        for (int i = 0; i != n; ++i)
+        {
+            sumValue += array[i];
+        }
+        return sumValue;
+    }
 }

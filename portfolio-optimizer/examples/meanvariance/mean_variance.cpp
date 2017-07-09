@@ -10,7 +10,7 @@ int main() {
 
     std::string dataFolder;
 
-    std::cout << "Please input data floder path: ";
+    std::cout << "Please input data folder path: ";
     std::cin >> dataFolder;
 
     MatrixXd varMatrix = io::read_csv(dataFolder + "/sec_cov_values.csv");
@@ -48,7 +48,7 @@ int main() {
         app->Options()->SetNumericValue("tol", 1e-8);
         app->Options()->SetIntegerValue("print_level", 0);
         app->Options()->SetStringValue("linear_solver", "ma27");
-        //app->Options()->SetStringValue("hessian_approximation", "limited-memory");
+        app->Options()->SetStringValue("hessian_approximation", "limited-memory");
         Ipopt::ApplicationReturnStatus status = app->Initialize();
         status = app->OptimizeTNLP(mynlp);
         boost::chrono::time_point<boost::chrono::high_resolution_clock>
