@@ -2,8 +2,6 @@ cmake_minimum_required (VERSION 3.0)
 
 project (pfopt)
 
-find_package (Eigen3 3.3 REQUIRED NO_MODULE)
-
 if(MSVC)
     set(USE_STATIC_BOOST ON)
     set(Boost_USE_STATIC_LIBS ON)
@@ -27,6 +25,7 @@ if(MSVC)
     set(BOOST_LIB_DIR $ENV{BOOST_ROOT}/stage/lib)
     set(LIBRARY_BIN_OUTOUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 
+    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../alglib/src)
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../eigen)
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../Ipopt/windows/include)
     link_directories(${IPOPT_LIB_DIR})

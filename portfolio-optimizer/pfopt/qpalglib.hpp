@@ -8,7 +8,7 @@ using namespace alglib;
 
 namespace pfopt {
 
-    class AlglibData {
+    class PFOPT_CLASS AlglibData {
     public:
         AlglibData(const VectorXd &expectReturn,
                    const MatrixXd &varMatrix,
