@@ -15,21 +15,10 @@ double calculate_cost(const real_2d_array& a, const real_1d_array& b, const real
     // risk cost
     real_1d_array yVector;
     yVector.setlength(n);
-    alglib::rmatrixmv(n,
-                      n,
-                      a,
-                      0,
-                      0,
-                      0,
-                      w,
-                      0,
-                      yVector,
-                      0);
+    alglib::rmatrixmv(n, n, a, 0, 0, 0, w, 0, yVector, 0);
     double totalRiskCost = 0.5 * alglib::vdotproduct(&yVector[0], 1, &w[0], 1, n) + cost1;
     return totalRiskCost;
 }
-
-
 
 
 int main() {
@@ -95,8 +84,6 @@ int main() {
                   << std::endl;
 
     }
-
-
 
     return 0;
 }
