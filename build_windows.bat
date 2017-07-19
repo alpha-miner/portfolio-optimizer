@@ -1,6 +1,6 @@
 @echo off
 
-set BUILD_TYPE=Release
+set BUILD_TYPE=Debug
 set BOOST_ROOT=d:\dev\boost_1_64_0
 
 cd alglib

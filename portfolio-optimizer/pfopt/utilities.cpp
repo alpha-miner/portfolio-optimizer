@@ -1,5 +1,6 @@
 #include "utilities.hpp"
 #include "minicsv.hpp"
+#include <cmath>
 #include <boost/lexical_cast.hpp>
 #include <boost/format.hpp>
 
@@ -73,5 +74,12 @@ namespace pfopt {
             sumValue += array[i];
         }
         return sumValue;
+    }
+
+    bool is_close(double a, double b, double tol) {
+        if(fabs(a - b) >= tol)
+            return false;
+        else
+            return true;
     }
 }
