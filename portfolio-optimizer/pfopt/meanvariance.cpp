@@ -3,14 +3,18 @@
 
 namespace pfopt {
 
-    MeanVariance::MeanVariance(const VectorXd &expectReturn, const MatrixXd &varMatrix, double riskAversion)
-            : expectReturn_(expectReturn), varMatrix_(varMatrix), riskAversion_(riskAversion), feval_(0.) {
-        assert(expectReturn_.size() == varMatrix.rows());
-        assert(varMatrix.rows() == varMatrix.cols());
-        numOfAssets_ = static_cast<int>(expectReturn_.size());
+    MeanVariance::MeanVariance(const std::vector<double> &expectReturn,
+                               const std::vector<double> &varMatrix,
+                               double riskAversion)
+            :riskAversion_(riskAversion), feval_(0.) {
+        assert((expectReturn.size() * expectReturn.size()) == varMatrix.size());
+        numOfAssets_ = static_cast<int>(expectReturn.size());
+        expectReturn_ = Map<VectorXd>(std::vector<double>(expectReturn).data(), numOfAssets_);
+		varMatrix_ = Map<MatrixXd>(std::vector<double>(varMatrix).data(), numOfAssets_, numOfAssets_);
+
         xReal_.resize(numOfAssets_, 1);
         grad_f_.resize(numOfAssets_, 1);
-        x_.resize(numOfAssets_, 1);
+        x_.resize(numOfAssets_);
     }
 
     bool MeanVariance::setBoundedConstraint(const VectorXd &lb, const VectorXd &ub) {

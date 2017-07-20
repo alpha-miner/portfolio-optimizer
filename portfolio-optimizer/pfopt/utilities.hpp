@@ -6,7 +6,7 @@
 namespace pfopt {
 
     namespace io {
-		PFOPT_API MatrixXd read_csv(const std::string &filePath);
+		PFOPT_API std::vector<double> read_csv(const std::string &filePath);
     }
 
 	PFOPT_API double min(const real_1d_array& array, int n = 0);

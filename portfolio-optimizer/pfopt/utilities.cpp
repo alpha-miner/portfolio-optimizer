@@ -7,9 +7,9 @@
 namespace pfopt {
 
     namespace io {
-        MatrixXd read_csv(const std::string &filePath) {
+        std::vector<double> read_csv(const std::string &filePath) {
 
-            std::vector<std::vector<double>> table;
+            std::vector<double> data;
 
             mini::csv::ifstream is(filePath);
 
@@ -17,24 +17,16 @@ namespace pfopt {
                 while (is.read_line()) {
                     std::string field;
                     is >> field;
-                    std::vector<double> row;
                     while (field != "") {
-                        row.push_back(boost::lexical_cast<double>(field));
+                        data.push_back(boost::lexical_cast<double>(field));
                         is >> field;
                     }
-                    table.push_back(row);
                 }
             } else {
                 throw std::runtime_error(str(boost::format("file %s is not found") % filePath));
             }
 
-            MatrixXd res(table.size(), table[0].size());
-
-            for (size_t i = 0; i != res.rows(); ++i)
-                for (size_t j = 0; j != res.cols(); ++j)
-                    res(i, j) = table[i][j];
-
-            return res;
+            return data;
         }
     }
 

@@ -37,15 +37,11 @@ int main() {
         vector<double> object(n);
         for (int i = 0; i != n; ++i)
             object[i] = objectValues(i);
-
-        MatrixXd consValues = MatrixXd::Ones(1, n+2);
-        vector<vector<double>> cons(1);
-        cons[0] = vector<double>(n+2);
-        for (int i = 0; i != cons[0].size(); ++i)
-            cons[0][i] = consValues(0, i);
+            
+        vector<double> cons(n+2, 1.);
 
         LpOptimizer opt(cons, bndl, bndu, object);
-        std::vector<double> sol = opt.solution();
+        std::vector<double> sol = opt.xValue();
 
         boost::chrono::time_point<boost::chrono::high_resolution_clock>
                 current = boost::chrono::high_resolution_clock::now();
@@ -54,7 +50,7 @@ int main() {
 		std::cout << std::setw(widths[0]) << std::left << n
 			<< std::fixed << std::setprecision(6)
 			<< std::setw(widths[1]) << std::left << elapsed
-			<< std::setw(widths[2]) << std::left << 0.
+			<< std::setw(widths[2]) << std::left << opt.feval()
 			<< std::setw(widths[3]) << std::left << *min_element(sol.begin(), sol.end())
 			<< std::setw(widths[4]) << std::left << *max_element(sol.begin(), sol.end())
 			<< std::setw(widths[5]) << std::left << accumulate(sol.begin(), sol.end(), 0.) << endl;

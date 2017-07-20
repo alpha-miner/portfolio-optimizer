@@ -2,6 +2,7 @@
 #define pfopt_mean_variance_hpp
 
 #include "types.hpp"
+#include <vector>
 #include <coin/IpTNLP.hpp>
 
 using Ipopt::TNLP;
@@ -16,8 +17,8 @@ namespace pfopt {
 	class PFOPT_CLASS MeanVariance : public TNLP {
 
     public:
-        MeanVariance(const VectorXd &expectReturn,
-                     const MatrixXd &varMatrix,
+        MeanVariance(const std::vector<double> &expectReturn,
+                     const std::vector<double> &varMatrix,
                      double riskAversion=1.);
 
         bool setBoundedConstraint(const VectorXd& lb, const VectorXd& ub);
@@ -55,8 +56,8 @@ namespace pfopt {
                                        const IpoptData *ip_data,
                                        IpoptCalculatedQuantities *ip_cq);
 
-        Number feval() const { return feval_; }
-        VectorXd xValue() const { return x_; }
+        double feval() const { return feval_; }
+        std::vector<double> xValue() const { return x_; }
 
     private:
         VectorXd expectReturn_;
@@ -69,7 +70,7 @@ namespace pfopt {
         VectorXd ub_;
         VectorXd grad_f_;
         double feval_;
-        VectorXd x_;
+        std::vector<double> x_;
     };
 }
 #endif

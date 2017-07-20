@@ -3,8 +3,11 @@
 #include <pfopt/utilities.hpp>
 #include <pfopt/meanvariance.hpp>
 #include <iomanip>
+#include <algorithm>
+#include <numeric>
 
 using namespace pfopt;
+using namespace std;
 
 int main() {
 
@@ -13,10 +16,10 @@ int main() {
     std::cout << "Please input data folder path: ";
     std::cin >> dataFolder;
 
-    MatrixXd varMatrix = io::read_csv(dataFolder + "/sec_cov_values.csv");
-    VectorXd expectReturn = io::read_csv(dataFolder + "/signal.csv");
+    vector<double> varMatrix = io::read_csv(dataFolder + "/sec_cov_values.csv");
+	vector<double> expectReturn = io::read_csv(dataFolder + "/signal.csv");
 
-    int variableNumber = varMatrix.rows();
+    int variableNumber = expectReturn.size();
 
     int widths[] = { 25, 14, 14, 14, 14, 14};
     std::cout << std::setw(widths[0]) << std::left << "Scale"
@@ -39,8 +42,12 @@ int main() {
         boost::chrono::time_point<boost::chrono::high_resolution_clock>
                 start = boost::chrono::high_resolution_clock::now();
 
-        VectorXd expectReturn_sub = expectReturn.block(0, 0, n, 1);
-        MatrixXd varMatrix_sub = varMatrix.block(0, 0, n, n);
+		vector<double> expectReturn_sub(expectReturn.begin(), expectReturn.begin()+n);
+		vector<double> varMatrix_sub(n*n);
+
+		for (int i = 0; i != n; ++i)
+			for (int j = 0; j != n; ++j)
+				varMatrix_sub[i*n + j] = varMatrix[i*variableNumber + j];
 
         Ipopt::SmartPtr<MeanVariance> mynlp = new MeanVariance(expectReturn_sub, varMatrix_sub);
         mynlp->setBoundedConstraint(bndl, bndu);
@@ -51,6 +58,7 @@ int main() {
         app->Options()->SetStringValue("hessian_approximation", "limited-memory");
         Ipopt::ApplicationReturnStatus status = app->Initialize();
         status = app->OptimizeTNLP(mynlp);
+		std::vector<double> sol = mynlp->xValue();
         boost::chrono::time_point<boost::chrono::high_resolution_clock>
                 current = boost::chrono::high_resolution_clock::now();
 
@@ -59,9 +67,9 @@ int main() {
                 << std::fixed << std::setprecision(6)
                 << std::setw(widths[1]) << std::left << elapsed
                 << std::setw(widths[2]) << std::left << mynlp->feval()
-                << std::setw(widths[3]) << std::left << mynlp->xValue().minCoeff()
-                << std::setw(widths[4]) << std::left << mynlp->xValue().maxCoeff()
-                << std::setw(widths[5]) << std::left << mynlp->xValue().sum()
+                << std::setw(widths[3]) << std::left << *min_element(sol.begin(), sol.end())
+			    << std::setw(widths[4]) << std::left << *max_element(sol.begin(), sol.end())
+			    << std::setw(widths[5]) << std::left << accumulate(sol.begin(), sol.end(), 0.)
                 << std::endl;
     }
 

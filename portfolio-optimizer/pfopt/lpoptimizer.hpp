@@ -9,12 +9,13 @@ namespace pfopt {
 
     class PFOPT_CLASS LpOptimizer {
         public:
-            LpOptimizer(const std::vector<std::vector<double>>& constraintsMatraix,
+            LpOptimizer(const std::vector<double>& constraintsMatraix,
                         const std::vector<double>& lowerBound,
                         const std::vector<double>& upperBound,
                         const std::vector<double>& objective);
 
-            std::vector<double> solution() const;
+            std::vector<double> xValue() const;
+			double feval() const;
             int status() const { return model_.status();}
 
         private:
