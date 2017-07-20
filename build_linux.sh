@@ -19,7 +19,7 @@ cmake -DCMAKE_INSTALL_PREFIX=$PWD/.. ..
 make uninstall
 make -j8 install
 
-cd ../../Clp
+cd ../../clp
 ./configure --prefix=$PWD
 make -j8
 make install

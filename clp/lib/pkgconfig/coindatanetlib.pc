@@ -1,0 +1,9 @@
+prefix=/home/wegamkeinglc/Documents/dev/coding/portfolio-optimizer/clp
+datadir=${prefix}/share/coin/Data/Netlib
+
+Name: Netlib
+Description: Netlib models
+URL: https://projects.coin-or.org/svn/Data/Netlib
+Version: 1.2
+Libs:
+Cflags:
