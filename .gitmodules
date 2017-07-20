@@ -5,7 +5,3 @@
 	path = OpenBLAS
 	url = https://github.com/ChinaQuants/OpenBLAS.git
 	branch = develop
-[submodule "Clp"]
-	path = Clp
-	url = https://github.com/ChinaQuants/Clp.git
-	branch = master
