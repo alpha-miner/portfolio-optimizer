@@ -19,7 +19,12 @@ cmake -DCMAKE_INSTALL_PREFIX=$PWD/.. ..
 make uninstall
 make -j8 install
 
-cd ../../portfolio-optimizer
+cd ../../Clp
+./configure --prefix=$PWD
+make -j8
+make install
+
+cd ../portfolio-optimizer
 mkdir build
 cd build
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/.. ..
