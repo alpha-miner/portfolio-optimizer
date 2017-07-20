@@ -5,6 +5,7 @@
 #include <iomanip>
 
 using namespace pfopt;
+using namespace std;
 
 
 double calculate_cost(const real_2d_array& a, const real_1d_array& b, const real_1d_array& w) {
@@ -28,10 +29,10 @@ int main() {
     std::cout << "Please input data folder path: ";
     std::cin >> dataFolder;
 
-    MatrixXd varMatrix = io::read_csv(dataFolder + "/sec_cov_values.csv");
-    VectorXd expectReturn = io::read_csv(dataFolder + "/signal.csv");
+    vector<double> varMatrix = io::read_csv(dataFolder + "/sec_cov_values.csv");
+	vector<double> expectReturn = io::read_csv(dataFolder + "/signal.csv");
 
-    int variableNumber = varMatrix.rows();
+    int variableNumber = expectReturn.size();
 
     int widths[] = { 25, 14, 14, 14, 14, 14};
     std::cout << std::setw(widths[0]) << std::left << "Scale"
@@ -44,8 +45,12 @@ int main() {
 
     for(int n=200; n <= variableNumber; n += 200) {
 
-        VectorXd expectReturn_sub = expectReturn.block(0, 0, n, 1);
-        MatrixXd varMatrix_sub = varMatrix.block(0, 0, n, n);
+        vector<double> expectReturn_sub(expectReturn.begin(), expectReturn.begin()+n);
+		vector<double> varMatrix_sub(n*n);
+
+		for (int i = 0; i != n; ++i)
+			for (int j = 0; j != n; ++j)
+				varMatrix_sub[i*n + j] = varMatrix[i*variableNumber + j];
 
         boost::chrono::time_point<boost::chrono::high_resolution_clock>
                 start = boost::chrono::high_resolution_clock::now();

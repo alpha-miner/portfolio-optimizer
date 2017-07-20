@@ -2,14 +2,15 @@
 
 namespace  pfopt {
 
-    AlglibData::AlglibData(const VectorXd &expectReturn, const MatrixXd &varMatrix, double riskAversion) {
-        b_.setlength(expectReturn.size());
-        a_.setlength(varMatrix.rows(), varMatrix.cols());
+    AlglibData::AlglibData(const std::vector<double> &expectReturn, const std::vector<double> &varMatrix, double riskAversion) {
+        int numOfAssets = expectReturn.size();
+        b_.setlength(numOfAssets);
+        a_.setlength(numOfAssets, numOfAssets);
 
-        for(size_t i=0; i != b_.length(); ++i) {
-            b_[i] = -expectReturn(i);
-            for(size_t j=0; j != a_.cols(); ++j)
-                a_[i][j]= riskAversion * varMatrix(i, j);
+        for(size_t i=0; i != numOfAssets; ++i) {
+            b_[i] = -expectReturn[i];
+            for(size_t j=0; j != numOfAssets; ++j)
+                a_[i][j]= riskAversion * varMatrix[i*numOfAssets + j];
         }
         n_ = b_.length();
     }

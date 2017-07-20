@@ -10,8 +10,8 @@ namespace pfopt {
 
     class PFOPT_CLASS AlglibData {
     public:
-        AlglibData(const VectorXd &expectReturn,
-                   const MatrixXd &varMatrix,
+        AlglibData(const std::vector<double> &expectReturn,
+                   const std::vector<double> &varMatrix,
                    double riskAversion=1.);
 
         real_1d_array b() const;

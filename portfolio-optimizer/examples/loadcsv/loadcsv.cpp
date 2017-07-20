@@ -6,8 +6,7 @@ using namespace std;
 
 int main() {
 
-    MatrixXd table = pfopt::io::read_csv("../../../data/signal.csv");
-    cout << table;
+    vector<double> data = pfopt::io::read_csv("../../../data/signal.csv");
 
     return 0;
 }
