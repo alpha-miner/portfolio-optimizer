@@ -23,8 +23,7 @@ cd ../../alglib
 mkdir build
 cd build
 cmake -DCMAKE_INSTALL_PREFIX=$PWD/.. ..
-make uninstall
-make -j8 install
+make -j8
 
 cd ../../clp
 ./configure --prefix=$PWD
