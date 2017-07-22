@@ -1,6 +1,5 @@
 #include "lpoptimizer.hpp"
 #include "utilities.hpp"
-#include <vector>
 
 namespace pfopt {
     LpOptimizer::LpOptimizer(const std::vector<double>& constraintsMatrix,
@@ -8,7 +7,6 @@ namespace pfopt {
                              const std::vector<double>& upperBound,
                              const std::vector<double>& objective) {
         assert(lowerBound.size() == upperBound.size());
-        assert((constraintsMatrix[0].size() - 2) == lowerBound.size());
         assert(objective.size() == lowerBound.size());
 
         int numberColumns = lowerBound.size();
@@ -26,7 +24,7 @@ namespace pfopt {
         for(int j=0; j != numberColumns; ++j) {
             starts.push_back(currentSize);
             for(int i=0; i != numberRows; ++i) {
-                double value = constraintsMatrix[i*numberColumns + j];
+                double value = constraintsMatrix[i*(numberColumns+2) + j];
                 if(!is_close(value, 0.)) {
                     elements.push_back(value);
                     rows.push_back(i);
@@ -44,8 +42,8 @@ namespace pfopt {
         std::vector<double> rowUpper;
 
         for(int i=0; i != numberRows; ++i) {
-            rowLower.push_back(constraintsMatrix[i*numberColumns + numberColumns]);
-            rowUpper.push_back(constraintsMatrix[i*numberColumns + numberColumns+1]);
+            rowLower.push_back(constraintsMatrix[i*(numberColumns+2) + numberColumns]);
+            rowUpper.push_back(constraintsMatrix[i*(numberColumns+2) + numberColumns+1]);
         }
 
         model_.setLogLevel(0);
