@@ -22,7 +22,8 @@ make -j8 install
 cd ../../alglib
 mkdir build
 cd build
-cmake -DCMAKE_INSTALL_PREFIX=$PWD/.. ..
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/.. ..
+make clean
 make -j8
 
 cd ../../clp
