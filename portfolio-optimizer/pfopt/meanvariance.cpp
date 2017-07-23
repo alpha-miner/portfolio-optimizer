@@ -17,11 +17,11 @@ namespace pfopt {
         x_.resize(numOfAssets_);
     }
 
-    bool MeanVariance::setBoundedConstraint(const VectorXd &lb, const VectorXd &ub) {
+    bool MeanVariance::setBoundedConstraint(const std::vector<double> &lb, const std::vector<double> &ub) {
         assert(lb.size() == numOfAssets_);
         assert(ub.size() == numOfAssets_);
-        lb_ = lb;
-        ub_ = ub;
+        lb_ = Map<VectorXd>(std::vector<double>(lb).data(), numOfAssets_);
+        ub_ = Map<VectorXd>(std::vector<double>(ub).data(), numOfAssets_);
         return true;
     }
 
