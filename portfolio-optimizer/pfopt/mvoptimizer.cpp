@@ -1,4 +1,4 @@
-#include "MVOptimizer.hpp"
+#include "mvoptimizer.hpp"
 
 namespace pfopt {
     
