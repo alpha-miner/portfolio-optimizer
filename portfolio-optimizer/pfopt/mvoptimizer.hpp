@@ -10,7 +10,8 @@ namespace pfopt {
         MVOptimizer(const std::vector<double> &expectReturn,
             const std::vector<double> &varMatrix,
             const std::vector<double> &lbound,
-            const std::vector<double> &ubound);
+            const std::vector<double> &ubound,
+            double riskAversion);
 
         std::vector<double> xValue() const { return mvImpl_->xValue(); }
         double feval() const { return mvImpl_->feval(); }

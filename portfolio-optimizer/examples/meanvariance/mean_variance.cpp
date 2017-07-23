@@ -48,7 +48,7 @@ int main() {
             for (int j = 0; j != n; ++j)
                 varMatrix_sub[i*n + j] = varMatrix[i*variableNumber + j];
 
-        MVOptimizer mvOptimizer(expectReturn_sub, varMatrix_sub, bndl, bndu);
+        MVOptimizer mvOptimizer(expectReturn_sub, varMatrix_sub, bndl, bndu, 1.);
         int status = mvOptimizer.status();
         std::vector<double> sol = mvOptimizer.xValue();
         boost::chrono::time_point<boost::chrono::high_resolution_clock>

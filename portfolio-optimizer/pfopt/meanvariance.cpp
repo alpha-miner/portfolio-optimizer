@@ -96,9 +96,7 @@ namespace pfopt {
             }
         } else {
             for (Index i = 0; i < numOfAssets_; ++i) {
-                for (Index i = 0; i < numOfAssets_; ++i) {
-                    values[i] = 1.;
-                }
+                values[i] = 1.;
             }
         }
         return true;
