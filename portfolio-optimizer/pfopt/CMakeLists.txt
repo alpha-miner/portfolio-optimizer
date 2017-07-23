@@ -1,5 +1,11 @@
 file(GLOB_RECURSE PFOPT_FILES "*.hpp" "*.cpp")
-add_library(pfopt SHARED ${PFOPT_FILES})
+
+if(MSVC)
+    add_library(pfopt STATIC ${PFOPT_FILES})
+else()
+    add_library(pfopt SHARED ${PFOPT_FILES})
+endif()
+
 target_link_libraries(pfopt alglib)
 
 if(MSVC)
