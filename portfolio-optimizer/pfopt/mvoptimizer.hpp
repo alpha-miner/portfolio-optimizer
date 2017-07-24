@@ -13,7 +13,7 @@ namespace pfopt {
             const std::vector<double> &ubound,
             const std::vector<double> &consMatrix = std::vector<double>(),
             const std::vector<double> &clb = std::vector<double>(),
-            const std::vector<double> & cub = std::vector<double>(),
+            const std::vector<double> &cub = std::vector<double>(),
             double riskAversion = 1.);
 
         std::vector<double> xValue() const { return mvImpl_->xValue(); }
