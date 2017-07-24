@@ -20,13 +20,14 @@ int main() {
 
     int variableNumber = expectReturn.size();
 
-    int widths[] = { 25, 14, 14, 14, 14, 14 };
+    int widths[] = { 25, 14, 14, 14, 14, 14, 18 };
     std::cout << std::setw(widths[0]) << std::left << "Scale"
         << std::setw(widths[1]) << std::left << "Time(ms)"
         << std::setw(widths[2]) << std::left << "f(x)"
         << std::setw(widths[3]) << std::left << "min(x)"
         << std::setw(widths[4]) << std::left << "max(x)"
         << std::setw(widths[5]) << std::left << "sum(x)"
+        << std::setw(widths[6]) << std::left << "x(0) + x(1)"
         << std::endl;
 
     for (int n = 200; n <= variableNumber; n += 200) {
@@ -48,7 +49,17 @@ int main() {
             for (int j = 0; j != n; ++j)
                 varMatrix_sub[i*n + j] = varMatrix[i*variableNumber + j];
 
-        MVOptimizer mvOptimizer(expectReturn_sub, varMatrix_sub, bndl, bndu, 1.);
+        std::vector<double> consMatrix(2*n, 0.);
+        for (int i = 0; i != n; ++i)
+            consMatrix[i] = 1.;
+
+        consMatrix[n] = 1.;
+        consMatrix[n + 1] = 1.;
+
+        std::vector<double> clb = { 0.95, 0.010 };
+        std::vector<double> cub = { 1., 0.015 };
+
+        MVOptimizer mvOptimizer(expectReturn_sub, varMatrix_sub, bndl, bndu, consMatrix, clb, cub);
         int status = mvOptimizer.status();
         std::vector<double> sol = mvOptimizer.xValue();
         boost::chrono::time_point<boost::chrono::high_resolution_clock>
@@ -62,6 +73,7 @@ int main() {
             << std::setw(widths[3]) << std::left << *min_element(sol.begin(), sol.end())
             << std::setw(widths[4]) << std::left << *max_element(sol.begin(), sol.end())
             << std::setw(widths[5]) << std::left << accumulate(sol.begin(), sol.end(), 0.)
+            << std::setw(widths[6]) << std::left << sol[0] + sol[1]
             << std::endl;
     }
 

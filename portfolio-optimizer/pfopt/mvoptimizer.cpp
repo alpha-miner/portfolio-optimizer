@@ -6,10 +6,14 @@ namespace pfopt {
         const std::vector<double>& varMatrix,
         const std::vector<double>& lbound,
         const std::vector<double>& ubound,
+        const std::vector<double>& consMatrix,
+        const std::vector<double>& clb,
+        const std::vector<double>& cub,
         double riskAversion) {
         
         mvImpl_ = new MeanVariance(expectReturn, varMatrix, riskAversion);
         mvImpl_->setBoundedConstraint(lbound, ubound);
+        mvImpl_->setLinearConstrains(consMatrix, clb, cub);
         app_ = IpoptApplicationFactory();
         app_->Options()->SetIntegerValue("print_level", 0);
         app_->Options()->SetStringValue("linear_solver", "ma27");
