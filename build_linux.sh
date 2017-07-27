@@ -38,6 +38,9 @@ cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/.. ..
 make clean
 make -j8
 
+cd ../bin
+./test_suite
+
 # build java interface for ipopt, please see README.md for detail
 
 cd ../../Ipopt/
