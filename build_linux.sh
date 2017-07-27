@@ -45,5 +45,6 @@ cd ../../Ipopt/
 cd Ipopt/contrib/JavaInterface
 
 export CLASSPATH=$PWD:$CLASSPATH
+export CPLUS_INCLUDE_PATH=$JAVA_HOME/include/linux
 
 make
