@@ -2,7 +2,7 @@
 #include "utilities.hpp"
 
 namespace pfopt {
-    LpOptimizer::LpOptimizer(const std::vector<double>& constraintsMatrix,
+    LpOptimizer::LpOptimizer(const std::vector<double>& constraintMatrix,
                              const std::vector<double>& lowerBound,
                              const std::vector<double>& upperBound,
                              const std::vector<double>& objective) {
@@ -10,7 +10,7 @@ namespace pfopt {
         assert(objective.size() == lowerBound.size());
 
         int numberColumns = lowerBound.size();
-        int numberRows = constraintsMatrix.size() / numberColumns;
+        int numberRows = constraintMatrix.size() / (numberColumns + 2);
 
         numberOfProb_ = numberColumns;
        
@@ -24,7 +24,7 @@ namespace pfopt {
         for(int j=0; j != numberColumns; ++j) {
             starts.push_back(currentSize);
             for(int i=0; i != numberRows; ++i) {
-                double value = constraintsMatrix[i*(numberColumns+2) + j];
+                double value = constraintMatrix[i*(numberColumns+2) + j];
                 if(!is_close(value, 0.)) {
                     elements.push_back(value);
                     rows.push_back(i);
@@ -42,8 +42,8 @@ namespace pfopt {
         std::vector<double> rowUpper;
 
         for(int i=0; i != numberRows; ++i) {
-            rowLower.push_back(constraintsMatrix[i*(numberColumns+2) + numberColumns]);
-            rowUpper.push_back(constraintsMatrix[i*(numberColumns+2) + numberColumns+1]);
+            rowLower.push_back(constraintMatrix[i*(numberColumns+2) + numberColumns]);
+            rowUpper.push_back(constraintMatrix[i*(numberColumns+2) + numberColumns+1]);
         }
 
         model_.setLogLevel(0);

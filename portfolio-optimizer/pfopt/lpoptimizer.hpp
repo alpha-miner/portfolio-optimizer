@@ -9,7 +9,7 @@ namespace pfopt {
 
     class PFOPT_CLASS LpOptimizer {
     public:
-        LpOptimizer(const std::vector<double>& constraintsMatraix,
+        LpOptimizer(const std::vector<double>& constraintMatrix,
             const std::vector<double>& lowerBound,
             const std::vector<double>& upperBound,
             const std::vector<double>& objective);
@@ -20,7 +20,7 @@ namespace pfopt {
 
     private:
         ClpSimplex model_;
-        int numberOfProb_;
+        size_t numberOfProb_;
     };
 }
 
