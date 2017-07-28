@@ -9,8 +9,8 @@ namespace pfopt {
         assert(lowerBound.size() == upperBound.size());
         assert(objective.size() == lowerBound.size());
 
-        int numberColumns = lowerBound.size();
-        int numberRows = constraintMatrix.size() / (numberColumns + 2);
+        auto numberColumns = lowerBound.size();
+        auto numberRows = constraintMatrix.size() / (numberColumns + 2);
 
         numberOfProb_ = numberColumns;
        
@@ -19,7 +19,7 @@ namespace pfopt {
         std::vector<CoinBigIndex> starts;
         std::vector<double> elements;
 
-        int currentSize = 0;
+        size_t currentSize = 0;
 
         for(int j=0; j != numberColumns; ++j) {
             starts.push_back(currentSize);
@@ -55,12 +55,12 @@ namespace pfopt {
     std::vector<double> LpOptimizer::xValue() const {
         std::vector<double> sol(numberOfProb_);
         double* tmp = model_.primalColumnSolution();
-        for(int i=0; i != numberOfProb_; ++i)
+        for(auto i=0; i != numberOfProb_; ++i)
             sol[i] = tmp[i];
         return sol;
     }
 
-	double LpOptimizer::feval() const {
-		return model_.objectiveValue();
-	}
+    double LpOptimizer::feval() const {
+        return model_.objectiveValue();
+    }
 }

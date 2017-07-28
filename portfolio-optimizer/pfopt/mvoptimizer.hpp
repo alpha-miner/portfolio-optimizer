@@ -5,7 +5,7 @@
 #include <coin/IpIpoptApplication.hpp>
 
 namespace pfopt {
-    class PFOPT_CLASS MVOptimizer {
+    class MVOptimizer {
     public:
         MVOptimizer(const std::vector<double> &expectReturn,
             const std::vector<double> &varMatrix,

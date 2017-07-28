@@ -7,7 +7,7 @@
 
 namespace pfopt {
 
-    class PFOPT_CLASS LpOptimizer {
+    class LpOptimizer {
     public:
         LpOptimizer(const std::vector<double>& constraintMatrix,
             const std::vector<double>& lowerBound,

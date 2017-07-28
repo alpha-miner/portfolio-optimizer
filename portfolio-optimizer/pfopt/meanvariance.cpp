@@ -32,9 +32,9 @@ namespace pfopt {
         m_ = clb.size();
         clb_ = clb;
         cub_ = cub;
-        for (int i = 0; i != m_; ++i) {
-            for (int j = 0; j != numOfAssets_; ++j) {
-                double value = consMatrix[i*numOfAssets_ + j];
+        for (auto i = 0; i != m_; ++i) {
+            for (auto j = 0; j != numOfAssets_; ++j) {
+                auto value = consMatrix[i*numOfAssets_ + j];
                 if (!is_close(value, 0.)) {
                     iRow_.push_back(i);
                     jCol_.push_back(j);
@@ -42,6 +42,7 @@ namespace pfopt {
                 }
             }
         }
+        return true;
     }
 
     bool MeanVariance::get_nlp_info(Index &n, Index &m, Index &nnz_jac_g,
@@ -68,8 +69,8 @@ namespace pfopt {
         bool init_z, Number *z_L, Number *z_U,
         Index m, bool init_lambda,
         Number *lambda) {
-        double startWeight = 1. / numOfAssets_;
-        for (Index i = 0; i < numOfAssets_; ++i) {
+        auto startWeight = 1. / numOfAssets_;
+        for (auto i = 0; i < numOfAssets_; ++i) {
             x[i] = startWeight;
         }
         return true;
@@ -99,11 +100,11 @@ namespace pfopt {
 
     bool MeanVariance::eval_g(Index n, const Number *x, bool new_x, Index m, Number *g) {
 
-        for (Index i = 0; i != m_; ++i) {
+        for (auto i = 0; i != m_; ++i) {
             g[i] = 0.;
         }
 
-        for (Index i = 0; i != iRow_.size(); ++i) {
+        for (auto i = 0; i != iRow_.size(); ++i) {
             g[iRow_[i]] += x[jCol_[i]] * g_grad_values_[i];
         }
         return true;
@@ -112,13 +113,12 @@ namespace pfopt {
     bool MeanVariance::eval_jac_g(Index n, const Number *x, bool new_x,
         Index m, Index nele_jac, Index *iRow, Index *jCol,
         Number *values) {
-        if (values == NULL) {
+        if (values == nullptr) {
             std::copy(iRow_.begin(), iRow_.end(), &iRow[0]);
             std::copy(jCol_.begin(), jCol_.end(), &jCol[0]);
         }
-        else {
+        else 
             std::copy(g_grad_values_.begin(), g_grad_values_.end(), &values[0]);
-        }
         return true;
     }
 
