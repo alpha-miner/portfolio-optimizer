@@ -7,17 +7,23 @@ using namespace pfopt;
 
 
 TEST(LpOptimizerTest, SimpleCase) {
-    size_t n = 10;
-    vector<double> consMat(n+2, 1.);
-    vector<double> lower(n, 0.);
-    vector<double> upper(n, 0.2);
-    vector<double> objective(n);
+    constexpr size_t n = 10;
+    double consMat[n+2];
+    double lower[n];
+    double upper[n];
+    double objective[n];
 
     for(size_t i=0; i != n; ++i) {
+        consMat[i] = 1.;
+        lower[i] = 0.;
+        upper[i] = 0.2;
         objective[i] = static_cast<double>(i);
     }
 
-    LpOptimizer optimizer(consMat, lower, upper, objective);
+    consMat[n] = 1.;
+    consMat[n+1] = 1.;
+
+    LpOptimizer optimizer(n, 1, consMat, lower, upper, objective);
 
     auto x = optimizer.xValue();
     auto f_val = optimizer.feval();
