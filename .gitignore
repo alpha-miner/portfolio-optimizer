@@ -49,3 +49,4 @@ clp/CoinUtils/src/config_coinutils.h
 clp/CoinUtils/src/config.h
 clp/doxydoc/doxygen.conf
 .vs/*
+*.mps

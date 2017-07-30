@@ -6,3 +6,8 @@ target_link_libraries(test_suite pfopt)
 target_link_libraries(test_suite alglib)
 target_link_libraries(test_suite gtest)
 target_link_libraries(test_suite gtest_main)
+
+if(MSVC)
+else()
+    target_link_libraries(test_suite pthread)
+endif()
