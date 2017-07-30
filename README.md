@@ -11,13 +11,14 @@
 在Linux下，只需要如下命令即可完成除gtest以外依赖的安装：
 
 ```bash
-sudo apt-get install cmake libboost-all-dev openjdk-8-jdk
+sudo apt-get install cmake libboost-all-dev openjdk-8-jdk libgtest-dev
 ```
-关于gtest在linux上的安装，请参考：[getting-started-with-google-test-on-ubuntu](https://www.eriksmistad.no/getting-started-with-google-test-on-ubuntu/)
+
+gtest在安装完成之后,还需要手动生产静态库文件。关于gtest在linux上的安装，请参考：[getting-started-with-google-test-on-ubuntu](https://www.eriksmistad.no/getting-started-with-google-test-on-ubuntu/)
 
 ### Windows
 
-已上的依赖需要手动在官网上下载安装，具体方法请参考个软件官网。
+已上的依赖需要手动在官网上下载安装，具体方法请参考各个软件官网。
 
 * boost 需要在``build_windows.bat``文件中设置``BOOST_ROOT``环境变量；
 
@@ -32,7 +33,8 @@ sudo apt-get install cmake libboost-all-dev openjdk-8-jdk
     ./build_linux.sh
     ```
 
-    会在 portfolio-optimizer/portfolio-optimizer/bin 文件夹下生成可执行文件。
+    * 会在 portfolio-optimizer/portfolio-optimizer/bin 文件夹下生成可执行文件;
+    * 在各个目录的lib下会生产需要动态链接库:*.so;
 
 * Windows
 
