@@ -3,8 +3,8 @@
 namespace pfopt {
     
     MVOptimizer::MVOptimizer(int numAssets,
-                             double* &expectReturn,
-                             double* &varMatrix,
+                             double* expectReturn,
+                             double* varMatrix,
                              double* lbound,
                              double* ubound,
                              int numCons,
