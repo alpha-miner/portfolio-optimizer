@@ -8,8 +8,8 @@ namespace pfopt {
     class MVOptimizer {
     public:
         MVOptimizer(int numAssets,
-                    double *&expectReturn,
-                    double *&varMatrix,
+                    double *expectReturn,
+                    double *varMatrix,
                     double *lbound,
                     double *ubound,
                     int numConstraints,
