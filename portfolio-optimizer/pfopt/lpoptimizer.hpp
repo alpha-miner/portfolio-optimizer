@@ -9,10 +9,12 @@ namespace pfopt {
 
     class LpOptimizer {
     public:
-        LpOptimizer(const std::vector<double>& constraintMatrix,
-            const std::vector<double>& lowerBound,
-            const std::vector<double>& upperBound,
-            const std::vector<double>& objective);
+        LpOptimizer(int numVariables,
+                    int numCons,
+                    double* constraintMatrix,
+                    double* lowerBound,
+                    double* upperBound,
+                    double* objective);
 
         std::vector<double> xValue() const;
         double feval() const;

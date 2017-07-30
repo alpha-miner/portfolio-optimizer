@@ -2,15 +2,15 @@
 #include "utilities.hpp"
 
 namespace pfopt {
-    LpOptimizer::LpOptimizer(const std::vector<double>& constraintMatrix,
-                             const std::vector<double>& lowerBound,
-                             const std::vector<double>& upperBound,
-                             const std::vector<double>& objective) {
-        assert(lowerBound.size() == upperBound.size());
-        assert(objective.size() == lowerBound.size());
+    LpOptimizer::LpOptimizer(int numVariables,
+                             int numCons,
+                             double* constraintMatrix,
+                             double* lowerBound,
+                             double* upperBound,
+                             double* objective) {
 
-        auto numberColumns = lowerBound.size();
-        auto numberRows = constraintMatrix.size() / (numberColumns + 2);
+        auto numberColumns = numVariables;
+        auto numberRows = numCons;
 
         numberOfProb_ = numberColumns;
        

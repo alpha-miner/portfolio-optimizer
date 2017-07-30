@@ -5,31 +5,27 @@
 
 namespace pfopt {
 
-    MeanVariance::MeanVariance(const std::vector<double> &expectReturn,
-        const std::vector<double> &varMatrix,
-        double riskAversion)
-        :riskAversion_(riskAversion), feval_(0.), m_(0) {
-        assert((expectReturn.size() * expectReturn.size()) == varMatrix.size());
-        numOfAssets_ = static_cast<int>(expectReturn.size());
-        expectReturn_ = Map<VectorXd>(std::vector<double>(expectReturn).data(), numOfAssets_);
-        varMatrix_ = Map<MatrixXd>(std::vector<double>(varMatrix).data(), numOfAssets_, numOfAssets_);
+    MeanVariance::MeanVariance(int numAssets,
+                               double* expectReturn,
+                               double* varMatrix,
+                               double riskAversion)
+        :riskAversion_(riskAversion), feval_(0.), m_(0), numOfAssets_(numAssets) {
+        expectReturn_ = Map<VectorXd>(expectReturn, numOfAssets_);
+        varMatrix_ = Map<MatrixXd>(varMatrix, numOfAssets_, numOfAssets_);
 
         xReal_.resize(numOfAssets_, 1);
         grad_f_.resize(numOfAssets_, 1);
         x_.resize(numOfAssets_);
     }
 
-    bool MeanVariance::setBoundedConstraint(const std::vector<double> &lb, const std::vector<double> &ub) {
-        assert(lb.size() == numOfAssets_);
-        assert(ub.size() == numOfAssets_);
+    bool MeanVariance::setBoundedConstraint(const double* lb, const double* ub) {
         lb_ = lb;
         ub_ = ub;
         return true;
     }
 
-    bool MeanVariance::setLinearConstrains(const std::vector<double>& consMatrix, const std::vector<double>& clb, const std::vector<double>& cub) {
-        assert((consMatrix.size() / clb.size()) == numOfAssets_);
-        m_ = clb.size();
+    bool MeanVariance::setLinearConstrains(int numCons, const double* consMatrix, const double* clb, const double* cub) {
+        m_ = numCons;
         clb_ = clb;
         cub_ = cub;
         for (auto i = 0; i != m_; ++i) {
@@ -56,11 +52,11 @@ namespace pfopt {
 
     bool MeanVariance::get_bounds_info(Index n, Number *x_l, Number *x_u,
         Index m, Number *g_l, Number *g_u) {
-        std::copy(lb_.begin(), lb_.end(), &x_l[0]);
-        std::copy(ub_.begin(), ub_.end(), &x_u[0]);
-        if (clb_.size() > 0) {
-            std::copy(clb_.begin(), clb_.end(), &g_l[0]);
-            std::copy(cub_.begin(), cub_.end(), &g_u[0]);
+        std::copy(&lb_[0], &lb_[0] + numOfAssets_, &x_l[0]);
+        std::copy(&ub_[0], &ub_[0] + numOfAssets_, &x_u[0]);
+        if (m_ > 0) {
+            std::copy(&clb_[0], &clb_[0] + m_, &g_l[0]);
+            std::copy(&cub_[0], &cub_[0] + m_, &g_u[0]);
         }
         return true;
     }

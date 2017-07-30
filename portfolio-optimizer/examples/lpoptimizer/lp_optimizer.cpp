@@ -12,30 +12,32 @@ using namespace std;
 
 int main() {
 
-    int widths[] = { 25, 14, 14, 14, 14, 14};
+    int widths[] = { 25, 14, 14, 14, 14, 14, 14};
     std::cout << std::setw(widths[0]) << std::left << "Scale"
         << std::setw(widths[1]) << std::left << "Time(ms)"
         << std::setw(widths[2]) << std::left << "f(x)"
         << std::setw(widths[3]) << std::left << "min(x)"
         << std::setw(widths[4]) << std::left << "max(x)"
         << std::setw(widths[5]) << std::left << "sum(x)"
+        << std::setw(widths[6]) << std::left << "x(0) + x(1)"
         << std::endl;
 
     for(int n=200; n <= 3000; n += 200) {
-        vector<double> bndl(n);
+        double* bndl = new double[n];
         for (int i = 0; i != n; ++i)
             bndl[i] = 0.0;
 
-        vector<double> bndu(n);
+        double* bndu = new double[n];
         for (int i = 0; i != n; ++i)
             bndu[i] = 0.01;
 
         VectorXd objectValues = VectorXd::Random(n);
-        vector<double> object(n);
+        double* object = new double[n];
         for (int i = 0; i != n; ++i)
             object[i] = objectValues(i);
             
-        vector<double> cons(2*n+4, 0.);
+        double* cons = new double[2*(n+2)];
+        memset(cons, 0, 2*(n+2)*sizeof(double));
 
         for(int i=0; i != n+2; ++i)
             cons[i] = 1.;
@@ -48,7 +50,7 @@ int main() {
         boost::chrono::time_point<boost::chrono::high_resolution_clock>
                 start = boost::chrono::high_resolution_clock::now();
 
-        LpOptimizer opt(cons, bndl, bndu, object);
+        LpOptimizer opt(n, 2, cons, bndl, bndu, object);
         std::vector<double> sol = opt.xValue();
 
         boost::chrono::time_point<boost::chrono::high_resolution_clock>
@@ -62,7 +64,11 @@ int main() {
 			<< std::setw(widths[3]) << std::left << *min_element(sol.begin(), sol.end())
 			<< std::setw(widths[4]) << std::left << *max_element(sol.begin(), sol.end())
 			<< std::setw(widths[5]) << std::left << accumulate(sol.begin(), sol.end(), 0.)
-            << std::setw(widths[5]) << std::left << accumulate(sol.begin(), sol.begin()+2, 0.) << endl;
+            << std::setw(widths[6]) << std::left << accumulate(sol.begin(), sol.begin()+2, 0.) << endl;
+
+        delete [] bndl;
+        delete [] bndu;
+        delete [] object;
     }
 
     return 0;

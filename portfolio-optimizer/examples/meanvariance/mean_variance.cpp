@@ -31,11 +31,11 @@ int main() {
         << std::endl;
 
     for (int n = 200; n <= variableNumber; n += 200) {
-        std::vector<double> bndl(n);
+        double* bndl = new double[n];
         for (int i = 0; i != n; ++i)
             bndl[i] = 0.0;
 
-        std::vector<double> bndu(n);
+        double* bndu = new double[n];
         for (int i = 0; i != n; ++i)
             bndu[i] = 0.01;
 
@@ -43,23 +43,25 @@ int main() {
             start = boost::chrono::high_resolution_clock::now();
 
         vector<double> expectReturn_sub(expectReturn.begin(), expectReturn.begin() + n);
-        vector<double> varMatrix_sub(n*n);
+        double* er = expectReturn_sub.data();
+        double* varMatrix_sub = new double[n*n];
 
         for (int i = 0; i != n; ++i)
             for (int j = 0; j != n; ++j)
                 varMatrix_sub[i*n + j] = varMatrix[i*variableNumber + j];
 
-        std::vector<double> consMatrix(2*n, 0.);
+        double* consMatrix = new double[2*n];
+        memset(consMatrix, 0, 2 * n * sizeof (double));
         for (int i = 0; i != n; ++i)
             consMatrix[i] = 1.;
 
         consMatrix[n] = 1.;
         consMatrix[n + 1] = 1.;
 
-        std::vector<double> clb = { 0.95, 0.010 };
-        std::vector<double> cub = { 1., 0.015 };
+        double clb[] = { 0.95, 0.010 };
+        double cub[] = { 1., 0.015 };
 
-        MVOptimizer mvOptimizer(expectReturn_sub, varMatrix_sub, bndl, bndu, consMatrix, clb, cub);
+        MVOptimizer mvOptimizer(n, er, varMatrix_sub, bndl, bndu, 2, consMatrix, clb, cub);
         int status = mvOptimizer.status();
         std::vector<double> sol = mvOptimizer.xValue();
         boost::chrono::time_point<boost::chrono::high_resolution_clock>
@@ -75,6 +77,11 @@ int main() {
             << std::setw(widths[5]) << std::left << accumulate(sol.begin(), sol.end(), 0.)
             << std::setw(widths[6]) << std::left << sol[0] + sol[1]
             << std::endl;
+
+        delete [] bndl;
+        delete [] bndu;
+        delete [] varMatrix_sub;
+        delete [] consMatrix;
     }
 
     return 0;
