@@ -21,7 +21,6 @@ endif (Boost_FOUND)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 if(MSVC)
-    add_definitions(-DPFOPF_EXPORTS)
     set(IPOPT_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../Ipopt/windows/lib/${CMAKE_BUILD_TYPE})
     set(CLP_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../clp/windows/lib/${CMAKE_BUILD_TYPE})
     set(ALGLIB_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../alglib/lib)
