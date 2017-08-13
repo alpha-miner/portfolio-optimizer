@@ -41,12 +41,20 @@ cd ../..
 make -j${num_cores}
 make install
 
+if [ $? -ne 0 ] ; then
+    exit 1
+fi
+
 cd ../eigen
 mkdir build
 cd build
 cmake -DCMAKE_INSTALL_PREFIX=$PWD/.. ..
 make uninstall
 make -j${num_cores} install
+
+if [ $? -ne 0 ] ; then
+    exit 1
+fi
 
 cd ../../alglib
 mkdir build
@@ -55,10 +63,18 @@ cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/.. ..
 make clean
 make -j${num_cores}
 
+if [ $? -ne 0 ] ; then
+    exit 1
+fi
+
 cd ../../clp
 ./configure --prefix=$PWD
 make -j${num_cores}
 make install
+
+if [ $? -ne 0 ] ; then
+    exit 1
+fi
 
 cd ../portfolio-optimizer
 mkdir build
@@ -67,8 +83,16 @@ cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/.. ..
 make clean
 make -j${num_cores}
 
+if [ $? -ne 0 ] ; then
+    exit 1
+fi
+
 cd ../bin
 ./test_suite
+
+if [ $? -ne 0 ] ; then
+    exit 1
+fi
 
 # build java interface for ipopt, please see README.md for detail
 
@@ -80,5 +104,9 @@ export CLASSPATH=$PWD:$CLASSPATH
 export CPLUS_INCLUDE_PATH=$JAVA_HOME/include/linux
 
 make
+
+if [ $? -ne 0 ] ; then
+    exit 1
+fi
 
 echo "Portfolio - Optimizer building completed!"
