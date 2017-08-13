@@ -7,6 +7,7 @@ cd OpenBLAS
 # make clean
 make -j${num_cores}
 make install PREFIX=$PWD
+rm lib/*.so
 
 cd ../Ipopt
 
@@ -36,7 +37,7 @@ cd ../Metis
 
 cd ../..
 
-./configure -disable-shared --prefix=$PWD --with-blas="$PWD/../OpenBLAS/lib/libopenblas.a" --with-lapack="$PWD/../OpenBLAS/lib/libopenblas.a" ADD_CFLAGS=-fopenmp ADD_FFLAGS=-fopenmp ADD_CXXFLAGS=-fopenmp
+./configure -disable-shared --prefix=$PWD --with-blas="-L$PWD/../OpenBLAS/lib -lopenblas" --with-lapack="-L$PWD/../OpenBLAS/lib -lopenblas" ADD_CFLAGS=-fopenmp ADD_FFLAGS=-fopenmp ADD_CXXFLAGS=-fopenmp
 # make clean
 make -j${num_cores}
 make install
