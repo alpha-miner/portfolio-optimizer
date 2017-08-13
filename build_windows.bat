@@ -32,6 +32,11 @@ cmake -G "Visual Studio 14 2015 Win64" -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ..
 
 msbuild pfopt.sln /m /p:Configuration=%BUILD_TYPE% /p:Platform=x64
 
-cd ../..
+cd ..
+
+cd bin
+test_suite.exe
+
+cd ..
 
 @echo on
