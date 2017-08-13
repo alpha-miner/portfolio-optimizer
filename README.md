@@ -43,7 +43,8 @@ gtest在安装完成之后,还需要手动生产静态库文件。关于gtest在
     ./build_windows.bat
     ```
 
-    进入 portfolio-optimizer/portfolio-optimizer/build 文件夹下使用Visual Studio项目文件。
+    * 会在 portfolio-optimizer/portfolio-optimizer/bin 文件夹下生成可执行文件;
+    * 在各个目录的lib下会生产需要动态链接库:*.lib;
 
 
 ### Ipopt Java接口
