@@ -1,7 +1,6 @@
 #include <pfopt/utilities.hpp>
 #include <iostream>
 
-using Eigen::MatrixXd;
 using namespace std;
 
 int main() {
