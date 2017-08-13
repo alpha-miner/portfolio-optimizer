@@ -5,7 +5,7 @@ addons:
   apt:
     packages:
       - cmake
-      - libboost-dev-all
+      - libboost-all-dev
       - libgtest-dev
       - git
 install:
