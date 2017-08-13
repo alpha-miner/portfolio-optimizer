@@ -16,4 +16,4 @@ install:
   # - export CXX="g++-6" CC="gcc-6"
   - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 60 --slave /usr/bin/g++ g++ /usr/bin/g++-5
 script:
-  - ./build_linux.sh
+  - bash build_linux.sh
