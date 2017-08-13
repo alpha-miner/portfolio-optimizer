@@ -37,7 +37,7 @@ cd ../Metis
 cd ../..
 
 ./configure --prefix=$PWD --with-blas="-L$PWD/../OpenBLAS/lib -lopenblas" --with-lapack="-L$PWD/../OpenBLAS/lib -lopenblas" ADD_CFLAGS=-fopenmp ADD_FFLAGS=-fopenmp ADD_CXXFLAGS=-fopenmp
-# make clean
+make clean
 make -j${num_cores}
 make install
 
