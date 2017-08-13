@@ -69,6 +69,7 @@ fi
 
 cd ../../clp
 ./configure --prefix=$PWD
+make clean
 make -j${num_cores}
 make install
 
