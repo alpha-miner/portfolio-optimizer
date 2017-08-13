@@ -13,7 +13,8 @@ install:
   - sudo apt-get -qq update
   - sudo apt-get -qq install g++-5
   - sudo apt-get -qq install gcc-5
+  - sudo apt-get -qq install gfortran-5
   # - export CXX="g++-6" CC="gcc-6"
-  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 60 --slave /usr/bin/g++ g++ /usr/bin/g++-5
+  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 60 --slave /usr/bin/g++ g++ /usr/bin/g++-5 /usr/bin/gfortran gfortran /usr/bin/gfortran-5 
 script:
   - bash build_linux.sh
