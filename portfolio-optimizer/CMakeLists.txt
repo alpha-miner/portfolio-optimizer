@@ -70,5 +70,3 @@ endif()
 add_subdirectory(pfopt)
 add_subdirectory(examples)
 add_subdirectory(tests)
-
-

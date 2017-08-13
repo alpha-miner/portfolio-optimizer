@@ -1,6 +1,10 @@
 file(GLOB_RECURSE PFOPT_FILES "*.hpp" "*.cpp")
 
-add_library(pfopt STATIC ${PFOPT_FILES})
+if(MSVC)
+    add_library(pfopt STATIC ${PFOPT_FILES})
+else()
+    add_library(pfopt SHARED ${PFOPT_FILES})
+endif()
 
 target_link_libraries(pfopt alglib)
 
@@ -24,5 +28,4 @@ else()
     target_link_libraries(pfopt coinmetis)
     target_link_libraries(pfopt coinmumps)
     target_link_libraries(pfopt openblas)
-    target_link_libraries(pfopt gfortran)
 endif()
