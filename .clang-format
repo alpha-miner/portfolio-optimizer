@@ -1,10 +1,10 @@
----
 Language:        Cpp
 # BasedOnStyle:  LLVM
 AccessModifierOffset: -4
 ConstructorInitializerIndentWidth: 4
 AlignEscapedNewlinesLeft: false
 AlignTrailingComments: true
+AlignAfterOpenBracket: Align
 AllowAllParametersOfDeclarationOnNextLine: true
 AllowShortIfStatementsOnASingleLine: false
 AllowShortLoopsOnASingleLine: false
@@ -14,7 +14,7 @@ AlwaysBreakBeforeMultilineStrings: false
 BreakBeforeBinaryOperators: false
 BreakBeforeTernaryOperators: true
 BreakConstructorInitializersBeforeComma: false
-BinPackParameters: true
+BinPackParameters: false
 ColumnLimit:     120
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
 DerivePointerBinding: false
@@ -22,7 +22,7 @@ ExperimentalAutoDetectBinPacking: false
 IndentCaseLabels: false
 MaxEmptyLinesToKeep: 1
 KeepEmptyLinesAtTheStartOfBlocks: true
-NamespaceIndentation: None
+NamespaceIndentation: All
 ObjCSpaceAfterProperty: false
 ObjCSpaceBeforeProtocolList: true
 PenaltyBreakBeforeFirstCallParameter: 19
@@ -50,4 +50,3 @@ ContinuationIndentWidth: 4
 CommentPragmas:  '^ IWYU pragma:'
 ForEachMacros:   [ foreach, Q_FOREACH, BOOST_FOREACH ]
 SpaceBeforeParens: ControlStatements
-...
