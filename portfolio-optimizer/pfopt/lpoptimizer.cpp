@@ -53,10 +53,8 @@ namespace pfopt {
     }
 
     std::vector<double> LpOptimizer::xValue() const {
-        std::vector<double> sol(numberOfProb_);
         double* tmp = model_.primalColumnSolution();
-        for(auto i=0; i != numberOfProb_; ++i)
-            sol[i] = tmp[i];
+        std::vector<double> sol(&tmp[0], &tmp[0] + numberOfProb_);
         return sol;
     }
 
