@@ -50,18 +50,15 @@ int main() {
             for (int j = 0; j != n; ++j)
                 varMatrix_sub[i*n + j] = varMatrix[i*variableNumber + j];
 
-        double* consMatrix = new double[2*n];
-        memset(consMatrix, 0, 2 * n * sizeof (double));
+        double* consMatrix = new double[n];
+        memset(consMatrix, 0, n * sizeof (double));
         for (int i = 0; i != n; ++i)
             consMatrix[i] = 1.;
 
-        consMatrix[n] = 1.;
-        consMatrix[n + 1] = 1.;
+        double clb[] = {1.};
+        double cub[] = {1.};
 
-        double clb[] = { 0.95, 0.010 };
-        double cub[] = { 1., 0.015 };
-
-        MVOptimizer mvOptimizer(n, er, varMatrix_sub, bndl, bndu, 2, consMatrix, clb, cub);
+        MVOptimizer mvOptimizer(n, er, varMatrix_sub, bndl, bndu, 1, consMatrix, clb, cub);
         int status = mvOptimizer.status();
         std::vector<double> sol = mvOptimizer.xValue();
         boost::chrono::time_point<boost::chrono::high_resolution_clock>

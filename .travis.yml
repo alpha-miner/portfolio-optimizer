@@ -16,9 +16,11 @@ install:
   - sudo apt-get -qq install gfortran-5
   # - export CXX="g++-6" CC="gcc-6"
   - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 60 --slave /usr/bin/g++ g++ /usr/bin/g++-5 --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-5
+  - export CWD=$PWD
   - cd /usr/src/gtest
   - sudo cmake CMakeLists.txt
   - sudo make
   - sudo cp *.a /usr/lib
+  - cd $CWD
 script:
   - bash build_linux.sh
