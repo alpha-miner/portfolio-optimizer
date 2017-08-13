@@ -36,7 +36,7 @@ cd ../Metis
 
 cd ../..
 
-./configure --prefix=$PWD --with-blas="-L$PWD/../OpenBLAS/lib -lopenblas" --with-lapack="-L$PWD/../OpenBLAS/lib -lopenblas" ADD_CFLAGS=-fopenmp ADD_FFLAGS=-fopenmp ADD_CXXFLAGS=-fopenmp
+./configure -disable-shared --prefix=$PWD --with-blas="-L$PWD/../OpenBLAS/lib libopenblas.a" --with-lapack="-L$PWD/../OpenBLAS/lib libopenblas.a" ADD_CFLAGS=-fopenmp ADD_FFLAGS=-fopenmp ADD_CXXFLAGS=-fopenmp
 # make clean
 make -j${num_cores}
 make install
@@ -68,7 +68,7 @@ if [ $? -ne 0 ] ; then
 fi
 
 cd ../../clp
-./configure --prefix=$PWD
+./configure -disable-shared --prefix=$PWD
 make -j${num_cores}
 make install
 

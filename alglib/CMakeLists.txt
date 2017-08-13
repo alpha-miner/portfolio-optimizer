@@ -5,9 +5,9 @@ PROJECT(alglib)
 # optimization for Intel cpu for alglib
 add_definitions(-DAE_CPU=AE_INTEL)
 add_definitions(-DHAVE_CONFIG_H)
+set(LIB_TYPE STATIC)
 
 if(MSVC)
-    set(LIB_TYPE STATIC)
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
@@ -22,7 +22,6 @@ if(MSVC)
     set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 
 else()
-    set(LIB_TYPE SHARED)
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_SOURCE_DIR}/lib)
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_SOURCE_DIR}/lib)
