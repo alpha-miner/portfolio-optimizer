@@ -37,6 +37,6 @@ cd ..
 cd bin
 test_suite.exe
 
-cd ..
+cd ../..
 
 @echo on
