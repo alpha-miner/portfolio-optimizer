@@ -45,18 +45,7 @@ if [ $? -ne 0 ] ; then
     exit 1
 fi
 
-cd ../eigen
-mkdir build
-cd build
-cmake -DCMAKE_INSTALL_PREFIX=$PWD/.. ..
-make uninstall
-make -j${num_cores} install
-
-if [ $? -ne 0 ] ; then
-    exit 1
-fi
-
-cd ../../alglib
+cd ../alglib
 mkdir build
 cd build
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/.. ..
