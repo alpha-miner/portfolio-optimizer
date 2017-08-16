@@ -3,9 +3,6 @@ cmake_minimum_required (VERSION 2.8)
 project (pfopt)
 
 if(MSVC)
-    set(USE_STATIC_BOOST ON)
-    set(Boost_USE_STATIC_RUNTIME ON)
-    set(Boost_USE_STATIC_LIBS ON)
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT /openmp")
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd /openmp")
 else()
@@ -13,13 +10,7 @@ else()
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fopenmp -march=native")
 endif()
 
-find_package(Boost REQUIRED COMPONENTS chrono system)
-
 add_definitions(-DHAVE_CONFIG_H)
-
-if (Boost_FOUND)
-  include_directories(${Boost_INCLUDE_DIRS})
-endif (Boost_FOUND)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 

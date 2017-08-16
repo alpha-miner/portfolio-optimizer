@@ -1,5 +1,4 @@
-#include <boost/chrono.hpp>
-#include <pfopt/utilities.hpp>
+#include <chrono>
 #include <pfopt/lpoptimizer.hpp>
 #include <iostream>
 #include <iomanip>
@@ -12,17 +11,17 @@ using namespace std;
 
 int main() {
 
-    int widths[] = { 25, 14, 14, 14, 14, 14, 14};
-    std::cout << std::setw(widths[0]) << std::left << "Scale"
-        << std::setw(widths[1]) << std::left << "Time(ms)"
-        << std::setw(widths[2]) << std::left << "f(x)"
-        << std::setw(widths[3]) << std::left << "min(x)"
-        << std::setw(widths[4]) << std::left << "max(x)"
-        << std::setw(widths[5]) << std::left << "sum(x)"
-        << std::setw(widths[6]) << std::left << "x(0) + x(1)"
-        << std::endl;
+    int widths[] = { 25, 14, 14, 14, 14, 14, 14 };
+    cout << setw(widths[0]) << left << "Scale"
+        << setw(widths[1]) << left << "Time(ms)"
+        << setw(widths[2]) << left << "f(x)"
+        << setw(widths[3]) << left << "min(x)"
+        << setw(widths[4]) << left << "max(x)"
+        << setw(widths[5]) << left << "sum(x)"
+        << setw(widths[6]) << left << "x(0) + x(1)"
+        << endl;
 
-    for(int n=200; n <= 3000; n += 200) {
+    for (int n = 200; n <= 3000; n += 200) {
         double* bndl = new double[n];
         for (int i = 0; i != n; ++i)
             bndl[i] = 0.0;
@@ -35,40 +34,40 @@ int main() {
         double* object = new double[n];
         for (int i = 0; i != n; ++i)
             object[i] = objectValues(i);
-            
-        double* cons = new double[2*(n+2)];
-        memset(cons, 0, 2*(n+2)*sizeof(double));
 
-        for(int i=0; i != n+2; ++i)
+        double* cons = new double[2 * (n + 2)];
+        memset(cons, 0, 2 * (n + 2) * sizeof(double));
+
+        for (int i = 0; i != n + 2; ++i)
             cons[i] = 1.;
 
-        cons[n+2] = 1.;
-        cons[n+3] = 1.;
-        cons[2*n+2] = 0.015;
-        cons[2*n+3] = 0.015;
+        cons[n + 2] = 1.;
+        cons[n + 3] = 1.;
+        cons[2 * n + 2] = 0.015;
+        cons[2 * n + 3] = 0.015;
 
-        boost::chrono::time_point<boost::chrono::high_resolution_clock>
-                start = boost::chrono::high_resolution_clock::now();
+        chrono::time_point<chrono::high_resolution_clock>
+            start = chrono::high_resolution_clock::now();
 
         LpOptimizer opt(n, 2, cons, bndl, bndu, object);
-        std::vector<double> sol = opt.xValue();
+        vector<double> sol = opt.xValue();
 
-        boost::chrono::time_point<boost::chrono::high_resolution_clock>
-                current = boost::chrono::high_resolution_clock::now();
+        chrono::time_point<chrono::high_resolution_clock>
+            current = chrono::high_resolution_clock::now();
 
-        double elapsed = boost::chrono::nanoseconds(current - start).count() / 1.0e6;
-		std::cout << std::setw(widths[0]) << std::left << n
-			<< std::fixed << std::setprecision(6)
-			<< std::setw(widths[1]) << std::left << elapsed
-			<< std::setw(widths[2]) << std::left << opt.feval()
-			<< std::setw(widths[3]) << std::left << *min_element(sol.begin(), sol.end())
-			<< std::setw(widths[4]) << std::left << *max_element(sol.begin(), sol.end())
-			<< std::setw(widths[5]) << std::left << accumulate(sol.begin(), sol.end(), 0.)
-            << std::setw(widths[6]) << std::left << accumulate(sol.begin(), sol.begin()+2, 0.) << endl;
+        double elapsed = chrono::nanoseconds(current - start).count() / 1.0e6;
+        cout << setw(widths[0]) << left << n
+            << fixed << setprecision(6)
+            << setw(widths[1]) << left << elapsed
+            << setw(widths[2]) << left << opt.feval()
+            << setw(widths[3]) << left << *min_element(sol.begin(), sol.end())
+            << setw(widths[4]) << left << *max_element(sol.begin(), sol.end())
+            << setw(widths[5]) << left << accumulate(sol.begin(), sol.end(), 0.)
+            << setw(widths[6]) << left << accumulate(sol.begin(), sol.begin() + 2, 0.) << endl;
 
-        delete [] bndl;
-        delete [] bndu;
-        delete [] object;
+        delete[] bndl;
+        delete[] bndu;
+        delete[] object;
     }
 
     return 0;

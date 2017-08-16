@@ -1,8 +1,5 @@
 #include "utilities.hpp"
 #include "minicsv.hpp"
-#include <cmath>
-#include <boost/lexical_cast.hpp>
-#include <boost/format.hpp>
 
 namespace pfopt {
 
@@ -18,12 +15,12 @@ namespace pfopt {
                     std::string field;
                     is >> field;
                     while (field != "") {
-                        data.push_back(boost::lexical_cast<double>(field));
+                        data.push_back(std::stod(field.c_str()));
                         is >> field;
                     }
                 }
             } else {
-                throw std::runtime_error(str(boost::format("file %s is not found") % filePath));
+                throw std::runtime_error(filePath);
             }
 
             return data;
@@ -71,7 +68,6 @@ namespace pfopt {
     bool is_close(double a, double b, double tol) {
         if(fabs(a - b) >= tol)
             return false;
-        else
-            return true;
+        return true;
     }
 }

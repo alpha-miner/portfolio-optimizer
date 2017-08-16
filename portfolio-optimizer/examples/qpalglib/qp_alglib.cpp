@@ -1,4 +1,4 @@
-#include <boost/chrono.hpp>
+#include <chrono>
 #include <pfopt/qpalglib.hpp>
 #include <pfopt/utilities.hpp>
 #include <iostream>
@@ -24,36 +24,36 @@ double calculate_cost(const real_2d_array& a, const real_1d_array& b, const real
 
 int main() {
 
-    std::string dataFolder;
+    string dataFolder;
 
-    std::cout << "Please input data folder path: ";
-    std::cin >> dataFolder;
+    cout << "Please input data folder path: ";
+    cin >> dataFolder;
 
     vector<double> varMatrix = io::read_csv(dataFolder + "/sec_cov_values.csv");
-	vector<double> expectReturn = io::read_csv(dataFolder + "/signal.csv");
+    vector<double> expectReturn = io::read_csv(dataFolder + "/signal.csv");
 
     int variableNumber = expectReturn.size();
 
-    int widths[] = { 25, 14, 14, 14, 14, 14};
-    std::cout << std::setw(widths[0]) << std::left << "Scale"
-              << std::setw(widths[1]) << std::left << "Time(ms)"
-              << std::setw(widths[2]) << std::left << "f(x)"
-              << std::setw(widths[3]) << std::left << "min(x)"
-              << std::setw(widths[4]) << std::left << "max(x)"
-              << std::setw(widths[5]) << std::left << "sum(x)"
-              << std::endl;
+    int widths[] = { 25, 14, 14, 14, 14, 14 };
+    cout << setw(widths[0]) << left << "Scale"
+        << setw(widths[1]) << left << "Time(ms)"
+        << setw(widths[2]) << left << "f(x)"
+        << setw(widths[3]) << left << "min(x)"
+        << setw(widths[4]) << left << "max(x)"
+        << setw(widths[5]) << left << "sum(x)"
+        << endl;
 
-    for(int n=200; n <= variableNumber; n += 200) {
+    for (int n = 200; n <= variableNumber; n += 200) {
 
-        vector<double> expectReturn_sub(expectReturn.begin(), expectReturn.begin()+n);
-		vector<double> varMatrix_sub(n*n);
+        vector<double> expectReturn_sub(expectReturn.begin(), expectReturn.begin() + n);
+        vector<double> varMatrix_sub(n*n);
 
-		for (int i = 0; i != n; ++i)
-			for (int j = 0; j != n; ++j)
-				varMatrix_sub[i*n + j] = varMatrix[i*variableNumber + j];
+        for (int i = 0; i != n; ++i)
+            for (int j = 0; j != n; ++j)
+                varMatrix_sub[i*n + j] = varMatrix[i*variableNumber + j];
 
-        boost::chrono::time_point<boost::chrono::high_resolution_clock>
-                start = boost::chrono::high_resolution_clock::now();
+        chrono::time_point<chrono::high_resolution_clock>
+            start = chrono::high_resolution_clock::now();
 
         AlglibData data(expectReturn_sub, varMatrix_sub);
 
@@ -71,22 +71,21 @@ int main() {
         minqpsetlc(state, data.c(), data.ct());
 
         minqpsetalgobleic(state, 0.0, 0.0, 0.0, 0);
-        //minqpsetalgodenseaul(state, 1.0e-9, 1.0e+4, 5);
         minqpoptimize(state);
         minqpresults(state, x, rep);
 
-        boost::chrono::time_point<boost::chrono::high_resolution_clock>
-                current = boost::chrono::high_resolution_clock::now();
+        chrono::time_point<chrono::high_resolution_clock>
+            current = chrono::high_resolution_clock::now();
 
-        double elapsed = boost::chrono::nanoseconds(current - start).count() / 1.0e6;
-        std::cout << std::setw(widths[0]) << std::left << n
-                  << std::fixed << std::setprecision(6)
-                  << std::setw(widths[1]) << std::left << elapsed
-                  << std::setw(widths[2]) << std::left << calculate_cost(data.a(), data.b(), x)
-                  << std::setw(widths[3]) << std::left << pfopt::min(x)
-                  << std::setw(widths[4]) << std::left << pfopt::max(x)
-                  << std::setw(widths[5]) << std::left << pfopt::sum(x)
-                  << std::endl;
+        double elapsed = chrono::nanoseconds(current - start).count() / 1.0e6;
+        cout << setw(widths[0]) << left << n
+            << fixed << setprecision(6)
+            << setw(widths[1]) << left << elapsed
+            << setw(widths[2]) << left << calculate_cost(data.a(), data.b(), x)
+            << setw(widths[3]) << left << pfopt::min(x)
+            << setw(widths[4]) << left << pfopt::max(x)
+            << setw(widths[5]) << left << pfopt::sum(x)
+            << endl;
 
     }
 

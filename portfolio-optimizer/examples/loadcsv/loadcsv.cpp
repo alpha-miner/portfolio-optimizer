@@ -1,5 +1,4 @@
 #include <pfopt/utilities.hpp>
-#include <iostream>
 
 using namespace std;
 
