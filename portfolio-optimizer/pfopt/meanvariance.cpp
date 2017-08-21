@@ -1,7 +1,6 @@
 #include "meanvariance.hpp"
 #include "utilities.hpp"
 #include <numeric>
-#include <iterator>
 
 namespace pfopt {
 
@@ -9,13 +8,9 @@ namespace pfopt {
                                double* expectReturn,
                                double* varMatrix,
                                double riskAversion)
-        :riskAversion_(riskAversion), feval_(0.), m_(0), numOfAssets_(numAssets) {
+        :numOfAssets_(numAssets), riskAversion_(riskAversion), feval_(0.) {
         expectReturn_ = Map<VectorXd>(expectReturn, numOfAssets_);
         varMatrix_ = Map<MatrixXd>(varMatrix, numOfAssets_, numOfAssets_);
-
-        xReal_.resize(numOfAssets_, 1);
-        grad_f_.resize(numOfAssets_, 1);
-        x_.resize(numOfAssets_);
     }
 
     bool MeanVariance::setBoundedConstraint(const double* lb, const double* ub) {
@@ -25,10 +20,10 @@ namespace pfopt {
     }
 
     bool MeanVariance::setLinearConstrains(int numCons, const double* consMatrix, const double* clb, const double* cub) {
-        m_ = numCons;
+        numCons_ = numCons;
         clb_ = clb;
         cub_ = cub;
-        for (auto i = 0; i != m_; ++i) {
+        for (auto i = 0; i != numCons_; ++i) {
             for (auto j = 0; j != numOfAssets_; ++j) {
                 auto value = consMatrix[i*numOfAssets_ + j];
                 if (!is_close(value, 0.)) {
@@ -44,7 +39,7 @@ namespace pfopt {
     bool MeanVariance::get_nlp_info(Index &n, Index &m, Index &nnz_jac_g,
         Index &nnz_h_lag, IndexStyleEnum &index_style) {
         n = numOfAssets_;
-        m = m_;
+        m = numCons_;
         nnz_jac_g = iRow_.size();
         index_style = TNLP::C_STYLE;
         return true;
@@ -54,9 +49,9 @@ namespace pfopt {
         Index m, Number *g_l, Number *g_u) {
         std::copy(&lb_[0], &lb_[0] + numOfAssets_, &x_l[0]);
         std::copy(&ub_[0], &ub_[0] + numOfAssets_, &x_u[0]);
-        if (m_ > 0) {
-            std::copy(&clb_[0], &clb_[0] + m_, &g_l[0]);
-            std::copy(&cub_[0], &cub_[0] + m_, &g_u[0]);
+        if (m > 0) {
+            std::copy(&clb_[0], &clb_[0] + m, &g_l[0]);
+            std::copy(&cub_[0], &cub_[0] + m, &g_u[0]);
         }
         return true;
     }
@@ -74,7 +69,6 @@ namespace pfopt {
 
     bool MeanVariance::eval_f(Index n, const Number *x, bool new_x, Number &obj_value) {
         xReal_  = Map<VectorXd>(const_cast<Number *>(x), numOfAssets_);
-        // risk grad
         grad_f_ = riskAversion_ * varMatrix_ * xReal_ - expectReturn_;
         obj_value = 0.5 * xReal_.dot(grad_f_ - expectReturn_);
         return true;
@@ -83,7 +77,6 @@ namespace pfopt {
     bool MeanVariance::eval_grad_f(Index n, const Number *x, bool new_x, Number *grad_f) {
         if (new_x) {
             xReal_ = Map<VectorXd>(const_cast<Number *>(x), numOfAssets_);
-            // risk grad
             grad_f_ = riskAversion_ * varMatrix_ * xReal_ - expectReturn_;
             std::copy(&grad_f_.data()[0], &grad_f_.data()[0] + numOfAssets_, &grad_f[0]);
         }
@@ -94,7 +87,7 @@ namespace pfopt {
 
     bool MeanVariance::eval_g(Index n, const Number *x, bool new_x, Index m, Number *g) {
 
-        for (auto i = 0; i != m_; ++i) {
+        for (auto i = 0; i != m; ++i) {
             g[i] = 0.;
         }
 
