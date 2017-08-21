@@ -75,9 +75,8 @@ namespace pfopt {
     bool MeanVariance::eval_f(Index n, const Number *x, bool new_x, Number &obj_value) {
         xReal_  = Map<VectorXd>(const_cast<Number *>(x), numOfAssets_);
         // risk grad
-        VectorXd riskGrad = varMatrix_ * xReal_;
-        obj_value = 0.5 * riskAversion_ * xReal_.dot(riskGrad) - expectReturn_.dot(xReal_);
-        grad_f_ = riskAversion_ * riskGrad - expectReturn_;
+        grad_f_ = riskAversion_ * varMatrix_ * xReal_ - expectReturn_;
+        obj_value = 0.5 * xReal_.dot(grad_f_ - expectReturn_);
         return true;
     }
 
@@ -85,8 +84,7 @@ namespace pfopt {
         if (new_x) {
             xReal_ = Map<VectorXd>(const_cast<Number *>(x), numOfAssets_);
             // risk grad
-            VectorXd riskGrad = varMatrix_ * xReal_;
-            grad_f_ = riskAversion_ * riskGrad - expectReturn_;
+            grad_f_ = riskAversion_ * varMatrix_ * xReal_ - expectReturn_;
             std::copy(&grad_f_.data()[0], &grad_f_.data()[0] + numOfAssets_, &grad_f[0]);
         }
         else
