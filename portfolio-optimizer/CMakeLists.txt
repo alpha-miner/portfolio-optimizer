@@ -15,7 +15,7 @@ add_definitions(-DHAVE_CONFIG_H)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 if(MSVC)
-    set(IPOPT_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../Ipopt/windows/lib/${CMAKE_BUILD_TYPE})
+    set(IPOPT_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../Ipopt/windows/lib)
     set(CLP_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../clp/windows/lib/${CMAKE_BUILD_TYPE})
     set(ALGLIB_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../alglib/lib)
     set(BOOST_LIB_DIR $ENV{BOOST_ROOT}/stage/lib)
