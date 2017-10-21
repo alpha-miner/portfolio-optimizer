@@ -1,5 +1,7 @@
 # Portfolio - Optimizer
 
+该项目在[Alpha-Mind](https://github.com/wegamekinglc/alpha-mind)中被使用。
+
 ## 依赖
 
 * cmake >= 2.8.0
