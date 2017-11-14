@@ -15,7 +15,11 @@ cd build
 
 cmake -G "Visual Studio 14 2015 Win64" -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ..
 
+if %errorlevel% neq 0 exit /b 1
+
 msbuild alglib.sln /m /p:Configuration=%BUILD_TYPE% /p:Platform=x64
+
+if %errorlevel% neq 0 exit /b 1
 
 cd ../../portfolio-optimizer
 
@@ -29,7 +33,11 @@ cd build
 
 cmake -G "Visual Studio 14 2015 Win64" -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ..
 
+if %errorlevel% neq 0 exit /b 1
+
 msbuild pfopt.sln /m /p:Configuration=%BUILD_TYPE% /p:Platform=x64
+
+if %errorlevel% neq 0 exit /b 1
 
 cd ..
 
