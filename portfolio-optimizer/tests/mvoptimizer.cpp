@@ -32,3 +32,27 @@ TEST(MVOptimizerTest, SimpleCase) {
 
     ASSERT_NEAR(y_value, y_expected, 1e-8);
 }
+
+TEST(MVOptimizerTest, SimpleCaseWithDefaultValue) {
+    constexpr int n = 3;
+    double er[] = {-0.02, 0.01, 0.03};
+    double cov[] = {1., 0., 0., 0., 1., 0., 0., 0., 1.};
+    double lb[] = {-1e10, -1e10, -1e10};
+    double ub[] = {1e10, 1e10, 1e10};
+
+    constexpr int n_cons = 1;
+
+    MVOptimizer opt(n, er, cov, lb, ub, n_cons);
+
+    auto x_values = opt.xValue();
+    auto y_value = opt.feval();
+    auto y_expected = -0.0007;
+
+    double x_expected[] = {-0.02, 0.01, 0.03};
+
+    for(size_t i=0; i!=x_values.size(); ++i) {
+        ASSERT_DOUBLE_EQ(x_values[i], x_expected[i]);
+    }
+
+    ASSERT_NEAR(y_value, y_expected, 1e-8);
+}
