@@ -30,7 +30,7 @@ if(MSVC)
     link_directories(${CLP_LIB_DIR})
     link_directories(${BOOST_LIB_DIR})
     link_directories(${ALGLIB_LIB_DIR})
-    link_directories($ENV{GTEST_ROOT}/lib)
+    link_directories($ENV{GTEST_ROOT}/lib/MT)
 
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE ${LIBRARY_BIN_OUTOUT_DIRECTORY})
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG ${LIBRARY_BIN_OUTOUT_DIRECTORY})
