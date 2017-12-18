@@ -17,7 +17,7 @@ namespace pfopt {
 
         ~LpOptimizer() { delete [] sol_;}
 
-        const double* xValue() const { return sol_; }
+        double* xValue() const { return sol_; }
         double feval() const;
         int status() const { return model_.status(); }
 

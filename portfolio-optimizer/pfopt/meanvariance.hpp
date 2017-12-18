@@ -56,7 +56,7 @@ namespace pfopt {
                                        IpoptCalculatedQuantities *ip_cq);
 
         double feval() const { return feval_; }
-        const double* xValue() const { return x_; }
+        double* xValue() const { return x_; }
 
     private:
         VectorXd expectReturn_;
