@@ -20,23 +20,23 @@ chmod 777 -R Metis
 chmod 777 -R HSL
 
 cd ASL
-./get.ASL
+# ./get.ASL
 
 cd ../Blas
-./get.Blas
+# ./get.Blas
 
 cd ../Lapack
-./get.Lapack
+# ./get.Lapack
 
 cd ../Mumps
-./get.Mumps
+# ./get.Mumps
 
 cd ../Metis
-./get.Metis
+# ./get.Metis
 
 cd ../..
 
-./configure --prefix=$PWD --with-blas="-L$PWD/../OpenBLAS/lib -lopenblas" --with-lapack="-L$PWD/../OpenBLAS/lib -lopenblas" ADD_CFLAGS=-fopenmp ADD_FFLAGS=-fopenmp ADD_CXXFLAGS=-fopenmp
+./configure --prefix=$PWD --with-blas="-L$PWD/../OpenBLAS/lib -lopenblas" --with-lapack="-L$PWD/../OpenBLAS/lib -lopenblas" --with-mumps=no --with-asl=no --with-pardiso=no ADD_CFLAGS=-fopenmp ADD_FFLAGS=-fopenmp ADD_CXXFLAGS=-fopenmp
 make clean
 make -j${num_cores}
 make install
