@@ -28,7 +28,7 @@ TEST(LpOptimizerTest, SimpleCase) {
     auto x = optimizer.xValue();
     auto f_val = optimizer.feval();
 
-    for(size_t i=0; i!=x.size(); ++i) {
+    for(size_t i=0; i != n; ++i) {
         if(i < 5)
             ASSERT_DOUBLE_EQ(x[i], 0.2);
         else

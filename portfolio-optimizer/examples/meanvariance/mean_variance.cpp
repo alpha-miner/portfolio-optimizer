@@ -60,7 +60,7 @@ int main() {
 
         MVOptimizer mvOptimizer(n, er, varMatrix_sub, bndl, bndu, 1, consMatrix, clb, cub);
         int status = mvOptimizer.status();
-        vector<double> sol = mvOptimizer.xValue();
+        vector<double> sol(&mvOptimizer.xValue()[0], &mvOptimizer.xValue()[0] + n);
         chrono::time_point<chrono::high_resolution_clock>
             current = chrono::high_resolution_clock::now();
 

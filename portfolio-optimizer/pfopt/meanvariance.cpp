@@ -11,6 +11,12 @@ namespace pfopt {
         :numOfAssets_(numAssets), riskAversion_(riskAversion), feval_(0.) {
         expectReturn_ = Map<VectorXd>(expectReturn, numOfAssets_);
         varMatrix_ = Map<MatrixXd>(varMatrix, numOfAssets_, numOfAssets_);
+        x_ = new double[numOfAssets_];
+        lb_ = nullptr;
+        ub_ = nullptr;
+        numCons_ = 0;
+        clb_ = nullptr;
+        cub_ = nullptr;
     }
 
     bool MeanVariance::setBoundedConstraint(const double* lb, const double* ub) {
@@ -115,7 +121,7 @@ namespace pfopt {
         Number obj_value,
         const IpoptData *ip_data,
         IpoptCalculatedQuantities *ip_cq) {
-        x_ = std::vector<double>(&x[0], &x[0] + numOfAssets_);
+        std::copy(&x[0], &x[0] + numOfAssets_, &x_[0]);
         feval_ = obj_value;
     }
 

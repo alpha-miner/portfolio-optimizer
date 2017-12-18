@@ -49,8 +49,9 @@ namespace pfopt {
         model_.setLogLevel(0);
         model_.loadProblem(matrix, &lowerBound[0], &upperBound[0], &objective[0], &rowLower[0], &rowUpper[0]);
         model_.initialSolve();
+        sol_ = new double[numberOfProb_];
         double* tmp = model_.primalColumnSolution();
-        sol_ = std::vector<double>(&tmp[0], &tmp[0] + numberOfProb_);
+        std::copy(&tmp[0], &tmp[0] + numberOfProb_, &sol_[0]);
     }
 
     double LpOptimizer::feval() const {

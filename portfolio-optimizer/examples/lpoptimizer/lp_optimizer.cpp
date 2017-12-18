@@ -50,7 +50,7 @@ int main() {
             start = chrono::high_resolution_clock::now();
 
         LpOptimizer opt(n, 2, cons, bndl, bndu, object);
-        vector<double> sol = opt.xValue();
+        vector<double> sol(&opt.xValue()[0], &opt.xValue()[0] + n);
 
         chrono::time_point<chrono::high_resolution_clock>
             current = chrono::high_resolution_clock::now();
