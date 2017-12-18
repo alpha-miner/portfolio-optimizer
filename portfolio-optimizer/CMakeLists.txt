@@ -43,7 +43,7 @@ else()
     add_definitions(-std=c++11)
 
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../Ipopt/include)
-    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../clp/include/coin)
+    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../clp/include)
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../eigen)
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../alglib/src)
 

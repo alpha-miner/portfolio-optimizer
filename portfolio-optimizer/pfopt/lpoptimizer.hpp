@@ -2,7 +2,7 @@
 #define pfopt_linear_programming_optimizer_hpp
 
 #include "types.hpp"
-#include "ClpSimplex.hpp"
+#include "coin/ClpSimplex.hpp"
 
 namespace pfopt {
 

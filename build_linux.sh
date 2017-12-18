@@ -84,9 +84,42 @@ if [ $? -ne 0 ] ; then
     exit 1
 fi
 
+# copy necessary lib
+
+cd ../..
+
+if [ ! -d lib ]; then
+    mkdir lib
+else
+    rm -r lib/*
+fi
+
+cp alglib/lib/*.so lib/
+cp clp/lib/*.so* lib/
+cp OpenBLAS/lib/*.so* lib/
+cp Ipopt/lib/*.so* lib/
+cp portfolio-optimizer/lib/*.so* lib
+
+# copy necessary header files
+if [ ! -d include ]; then
+    mkdir include
+else
+    rm -r include/*
+fi
+
+mkdir include/alglib
+mkdir include/clp
+mkdir include/ipopt
+mkdir include/pfopt
+
+cp alglib/src/*.h include/alglib
+cp -r clp/include/* include/clp
+cp -r Ipopt/include/* include/ipopt
+cp portfolio-optimizer/pfopt/*.hpp include/pfopt
+
 # build java interface for ipopt, please see README.md for detail
 
-cd ../../Ipopt/
+cd Ipopt/
 
 cd Ipopt/contrib/JavaInterface
 
