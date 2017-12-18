@@ -11,7 +11,6 @@ namespace pfopt {
         :numOfAssets_(numAssets), riskAversion_(riskAversion), feval_(0.) {
         expectReturn_ = Map<VectorXd>(expectReturn, numOfAssets_);
         varMatrix_ = Map<MatrixXd>(varMatrix, numOfAssets_, numOfAssets_);
-        x_ = new double[numOfAssets_];
         lb_ = nullptr;
         ub_ = nullptr;
         numCons_ = 0;
@@ -121,7 +120,7 @@ namespace pfopt {
         Number obj_value,
         const IpoptData *ip_data,
         IpoptCalculatedQuantities *ip_cq) {
-        std::copy(&x[0], &x[0] + numOfAssets_, &x_[0]);
+        x_ = std::vector<double>(&x[0], &x[0] + numOfAssets_);
         feval_ = obj_value;
     }
 

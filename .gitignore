@@ -50,3 +50,5 @@ clp/CoinUtils/src/config.h
 clp/doxydoc/doxygen.conf
 .vs/*
 *.mps
+include/*
+lib/*

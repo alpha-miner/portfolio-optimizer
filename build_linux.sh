@@ -110,11 +110,13 @@ fi
 mkdir include/alglib
 mkdir include/clp
 mkdir include/ipopt
+mkdir include/eigen
 mkdir include/pfopt
 
 cp alglib/src/*.h include/alglib
 cp -r clp/include/* include/clp
 cp -r Ipopt/include/* include/ipopt
+cp -r eigen/Eigen include/eigen
 cp portfolio-optimizer/pfopt/*.hpp include/pfopt
 
 # build java interface for ipopt, please see README.md for detail

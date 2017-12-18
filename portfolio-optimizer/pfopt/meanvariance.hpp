@@ -22,8 +22,6 @@ namespace pfopt {
                      double* varMatrix,
                      double riskAversion=1.);
 
-        virtual ~MeanVariance() { delete [] x_;}
-
         bool setBoundedConstraint(const double* lb, const double* ub);
         bool setLinearConstrains(int numCons, const double* consMatrix, const double* clb, const double* cub);
 
@@ -56,7 +54,7 @@ namespace pfopt {
                                        IpoptCalculatedQuantities *ip_cq);
 
         double feval() const { return feval_; }
-        double* xValue() const { return x_; }
+        std::vector<double> xValue() const { return x_; }
 
     private:
         VectorXd expectReturn_;
@@ -70,7 +68,7 @@ namespace pfopt {
         const double* ub_;
         VectorXd grad_f_;
         double feval_;
-        double* x_;
+        std::vector<double> x_;
         std::vector<Index> iRow_;
         std::vector<Index> jCol_;
         std::vector<double> g_grad_values_;
