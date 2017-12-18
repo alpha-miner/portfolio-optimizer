@@ -44,6 +44,39 @@ cd ..
 cd bin
 test_suite.exe
 
+if %errorlevel% neq 0 exit /b 1
+
 cd ../..
+
+if exist include (
+  rmdir /s /q include
+  mkdir include
+) else (
+  mkdir include
+)
+
+md include\alglib
+md include\clp
+md include\ipopt
+md include\eigen\Eigen
+md include\pfopt
+
+xcopy alglib\src include\alglib /Q
+xcopy clp\windows\include include\clp /S /Q
+xcopy Ipopt\windows\include include\ipopt /S /Q
+xcopy eigen\Eigen include\eigen\Eigen /S /Q
+xcopy portfolio-optimizer\pfopt include\pfopt /Q
+
+if exist lib (
+  rmdir /s /q lib
+  mkdir lib
+) else (
+  mkdir lib
+)
+
+xcopy alglib\lib\*.lib lib /Q
+xcopy clp\windows\lib\%BUILD_TYPE%\*.lib lib /Q
+xcopy Ipopt\windows\lib\*.lib lib /Q
+xcopy portfolio-optimizer\lib\*.lib lib /Q
 
 @echo on
