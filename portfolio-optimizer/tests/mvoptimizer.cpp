@@ -26,7 +26,7 @@ TEST(MVOptimizerTest, SimpleCase) {
     double y_expected = -0.22625;
 
 
-    for(size_t i=0; i!=x_values.size(); ++i) {
+    for(size_t i=0; i!=n; ++i) {
         ASSERT_DOUBLE_EQ(x_values[i], x_expected[i]);
     }
 
@@ -50,7 +50,7 @@ TEST(MVOptimizerTest, SimpleCaseWithDefaultValue) {
 
     double x_expected[] = {-0.02, 0.01, 0.03};
 
-    for(size_t i=0; i!=x_values.size(); ++i) {
+    for(size_t i=0; i!=n; ++i) {
         ASSERT_DOUBLE_EQ(x_values[i], x_expected[i]);
     }
 
