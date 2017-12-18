@@ -1,6 +1,7 @@
 language: cpp
 sudo: enabled
 dist: trusty
+group: travis_lts
 addons:
   apt:
     packages:
