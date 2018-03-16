@@ -10,8 +10,9 @@ namespace pfopt {
     TargetVol::TargetVol(int numAssets,
                          double* expectReturn,
                          double* varMatrix,
-                         double targetVol)
-            :numOfAssets_(numAssets), targetVol_(targetVol) {
+                         double targetVolLow,
+                         double targetVolHigh)
+            :numOfAssets_(numAssets), targetVolLow_(targetVolLow), targetVolHigh_(targetVolHigh) {
         expectReturn_ = Map<VectorXd>(expectReturn, numOfAssets_);
         varMatrix_ = Map<MatrixXd>(varMatrix, numOfAssets_, numOfAssets_);
         lb_ = nullptr;
@@ -28,14 +29,14 @@ namespace pfopt {
     }
 
     bool TargetVol::setLinearConstrains(int numCons, const double* consMatrix, const double* clb, const double* cub) {
-        numCons_ = numCons + numCons_;
+        numCons_ += numCons;
         clb_ = clb;
         cub_ = cub;
         for (auto i = 0; i != numCons; ++i) {
             for (auto j = 0; j != numOfAssets_; ++j) {
                 auto value = consMatrix[i*numOfAssets_ + j];
                 if (!is_close(value, 0.)) {
-                    iRow_.push_back(i);
+                    iRow_.push_back(i+1);
                     jCol_.push_back(j);
                     g_grad_values_.push_back(value);
                 }
@@ -48,18 +49,20 @@ namespace pfopt {
                                     Index &nnz_h_lag, IndexStyleEnum &index_style) {
         n = numOfAssets_;
         m = numCons_;
-        nnz_jac_g = static_cast<Index>(numOfAssets_ + iRow_.size());
+        nnz_jac_g = static_cast<Index>(n + iRow_.size());
         index_style = TNLP::C_STYLE;
         return true;
     }
 
     bool TargetVol::get_bounds_info(Index n, Number *x_l, Number *x_u,
                                        Index m, Number *g_l, Number *g_u) {
-        std::copy(&lb_[0], &lb_[0] + numOfAssets_, &x_l[0]);
-        std::copy(&ub_[0], &ub_[0] + numOfAssets_, &x_u[0]);
-        if (m > 0) {
-            std::copy(&clb_[0], &clb_[0] + m, &g_l[0]);
-            std::copy(&cub_[0], &cub_[0] + m, &g_u[0]);
+        std::copy(&lb_[0], &lb_[0] + n, &x_l[0]);
+        std::copy(&ub_[0], &ub_[0] + n, &x_u[0]);
+        g_l[0] = 0.5 * targetVolLow_ * targetVolLow_;
+        g_u[0] = 0.5 * targetVolHigh_ * targetVolHigh_;
+        if (m > 1) {
+            std::copy(&clb_[0], &clb_[0] + m - 1, &g_l[0] + 1);
+            std::copy(&cub_[0], &cub_[0] + m - 1, &g_u[0] + 1);
         }
         return true;
     }
@@ -68,9 +71,8 @@ namespace pfopt {
                                        bool init_z, Number *z_L, Number *z_U,
                                        Index m, bool init_lambda,
                                        Number *lambda) {
-        auto startWeight = 1. / numOfAssets_;
         for (auto i = 0; i < numOfAssets_; ++i) {
-            x[i] = startWeight;
+            x[i] = 0.;
         }
         return true;
     }
@@ -101,9 +103,10 @@ namespace pfopt {
         }
 
         g[0] = 0.5 * xReal_.dot(varMatrix_ * xReal_);
-
-        for (auto i = 0; i != iRow_.size(); ++i) {
-            g[iRow_[i] + 1] += x[jCol_[i]] * g_grad_values_[i];
+        if(m > 1) {
+            for (auto i = 0; i != iRow_.size(); ++i) {
+                g[iRow_[i]] += x[jCol_[i]] * g_grad_values_[i];
+            }
         }
         return true;
     }
@@ -116,17 +119,31 @@ namespace pfopt {
                 iRow[i] = 0;
                 jCol[i] = i;
             }
-
-            std::copy(iRow_.begin(), iRow_.end(), &iRow[0] + n);
-            std::copy(jCol_.begin(), jCol_.end(), &jCol[0] + n);
+            if(m > 1) {
+                std::copy(iRow_.begin(), iRow_.end(), &iRow[0] + n);
+                std::copy(jCol_.begin(), jCol_.end(), &jCol[0] + n);
+            }
         }
         else {
-            xReal_  = Map<VectorXd>(const_cast<Number *>(x), numOfAssets_);
+            xReal_ = Map<VectorXd>(const_cast<Number *>(x), numOfAssets_);
             VectorXd gg = varMatrix_ * xReal_;
             for(auto i=0; i!=n; ++i)
                 values[i] = gg[i];
-            std::copy(g_grad_values_.begin(), g_grad_values_.end(), &values[0] + n);
+            if(m > 1) {
+                std::copy(g_grad_values_.begin(), g_grad_values_.end(), &values[0] + n);
+            }
         }
         return true;
     }
+
+    void TargetVol::finalize_solution(SolverReturn status,
+                                      Index n, const Number *x, const Number *z_L, const Number *z_U,
+                                      Index m, const Number *g, const Number *lambda,
+                                      Number obj_value,
+                                      const IpoptData *ip_data,
+                                      IpoptCalculatedQuantities *ip_cq) {
+        x_ = std::vector<double>(&x[0], &x[0] + numOfAssets_);
+        feval_ = obj_value;
+    }
+
 }
