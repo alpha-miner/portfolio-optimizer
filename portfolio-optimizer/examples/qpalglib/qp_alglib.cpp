@@ -55,7 +55,10 @@ int main() {
         chrono::time_point<chrono::high_resolution_clock>
             start = chrono::high_resolution_clock::now();
 
-        AlglibData data(expectReturn_sub, varMatrix_sub);
+        vector<double> lbound(n, 0.);
+        vector<double> ubound(n, 0.1);
+
+        AlglibData data(n, &expectReturn_sub[0], &varMatrix_sub[0], &lbound[0], &ubound[0]);
 
         minqpstate state;
         minqpreport rep;
@@ -68,7 +71,6 @@ int main() {
         minqpsetstartingpoint(state, data.x0());
         minqpsetbc(state, data.bndl(), data.bndu());
         minqpsetscale(state, data.scale());
-        minqpsetlc(state, data.c(), data.ct());
 
         minqpsetalgobleic(state, 0.0, 0.0, 0.0, 0);
         minqpoptimize(state);
