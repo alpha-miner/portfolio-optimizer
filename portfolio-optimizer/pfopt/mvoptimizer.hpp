@@ -21,7 +21,6 @@ namespace pfopt {
         std::vector<double> xValue() const { return mvImpl_->xValue(); }
 
         double feval() const { return mvImpl_->feval(); }
-
         int status() const { return status_; }
 
     private:
