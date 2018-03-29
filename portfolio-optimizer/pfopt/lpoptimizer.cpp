@@ -1,5 +1,6 @@
 #include "lpoptimizer.hpp"
 #include "utilities.hpp"
+#include "coin/ClpCholeskyDense.hpp"
 
 namespace pfopt {
     LpOptimizer::LpOptimizer(int numVariables,
@@ -60,6 +61,8 @@ namespace pfopt {
             ClpInterior model;
             model.setLogLevel(0);
             model.loadProblem(matrix, &lowerBound[0], &upperBound[0], &objective[0], &rowLower[0], &rowUpper[0]);
+            ClpCholeskyDense * cholesky = new ClpCholeskyDense();
+            model.setCholesky(cholesky);
             model.primalDual();
             double *tmp = model.primalColumnSolution();
             sol_ = std::vector<double>(&tmp[0], &tmp[0] + numberOfProb_);
