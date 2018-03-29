@@ -7,7 +7,8 @@ namespace pfopt {
                              double* constraintMatrix,
                              double* lowerBound,
                              double* upperBound,
-                             double* objective) {
+                             double* objective,
+                             std::string method) {
 
         auto numberColumns = numVariables;
         auto numberRows = numCons;
@@ -46,14 +47,28 @@ namespace pfopt {
             rowUpper.push_back(constraintMatrix[i*(numberColumns+2) + numberColumns+1]);
         }
 
-        model_.setLogLevel(0);
-        model_.loadProblem(matrix, &lowerBound[0], &upperBound[0], &objective[0], &rowLower[0], &rowUpper[0]);
-        model_.initialSolve();
-        double* tmp = model_.primalColumnSolution();
-        sol_ = std::vector<double>(&tmp[0], &tmp[0] + numberOfProb_);
+        if (method == "simplex") {
+            ClpSimplex model;
+            model.setLogLevel(0);
+            model.loadProblem(matrix, &lowerBound[0], &upperBound[0], &objective[0], &rowLower[0], &rowUpper[0]);
+            model.initialSolve();
+            double *tmp = model.primalColumnSolution();
+            sol_ = std::vector<double>(&tmp[0], &tmp[0] + numberOfProb_);
+            feval_ = model.objectiveValue();
+            status_ = model.status();
+        } else {
+            ClpInterior model;
+            model.setLogLevel(0);
+            model.loadProblem(matrix, &lowerBound[0], &upperBound[0], &objective[0], &rowLower[0], &rowUpper[0]);
+            model.primalDual();
+            double *tmp = model.primalColumnSolution();
+            sol_ = std::vector<double>(&tmp[0], &tmp[0] + numberOfProb_);
+            feval_ = model.objectiveValue();
+            status_ = model.status();
+        }
     }
 
     double LpOptimizer::feval() const {
-        return model_.objectiveValue();
+        return feval_;
     }
 }
