@@ -12,6 +12,9 @@
 using Ipopt::TNLP;
 using Ipopt::Number;
 using Ipopt::Index;
+using Ipopt::SolverReturn;
+using Ipopt::IpoptData;
+using Ipopt::IpoptCalculatedQuantities;
 
 
 namespace pfopt {
@@ -20,8 +23,9 @@ namespace pfopt {
     public:
         TargetVol(int numAssets,
                   double* expectReturn,
-                  double* varMatrixm,
-                  double targetVol);
+                  double* varMatrix,
+                  double targetVolLow,
+                  double targetVolHigh);
 
         bool setBoundedConstraint(const double* lb, const double* ub);
         bool setLinearConstrains(int numCons, const double* consMatrix, const double* clb, const double* cub);
@@ -44,11 +48,21 @@ namespace pfopt {
                                 Index m, Index nele_jac, Index *iRow, Index *jCol,
                                 Number *values);
 
+        virtual void finalize_solution(SolverReturn status,
+                                       Index n, const Number *x, const Number *z_L, const Number *z_U,
+                                       Index m, const Number *g, const Number *lambda,
+                                       Number obj_value,
+                                       const IpoptData *ip_data,
+                                       IpoptCalculatedQuantities *ip_cq);
+
+        double feval() const { return feval_; }
+        std::vector<double> xValue() const { return x_;}
 
     private:
         VectorXd expectReturn_;
         MatrixXd varMatrix_;
-        const double targetVol_;
+        const double targetVolLow_;
+        const double targetVolHigh_;
         const int numOfAssets_;
         int numCons_;
         VectorXd xReal_;
@@ -56,6 +70,8 @@ namespace pfopt {
         const double* lb_;
         const double* ub_;
         VectorXd grad_f_;
+        double feval_;
+        std::vector<double> x_;
         const double* clb_;
         const double* cub_;
 
