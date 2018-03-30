@@ -1,4 +1,4 @@
-/* $Id: CoinSearchTree.hpp 1824 2015-04-04 16:27:28Z tkr $ */
+/* $Id: CoinSearchTree.hpp 1983 2017-10-27 15:42:04Z forrest $ */
 // Copyright (C) 2006, International Business Machines
 // Corporation and others.  All Rights Reserved.
 // This code is licensed under the terms of the Eclipse Public License (EPL).
@@ -153,8 +153,8 @@ struct CoinSearchTreeComparePreferred {
   static inline const char* name() { return "CoinSearchTreeComparePreferred"; }
   inline bool operator()(const CoinTreeSiblings* x,
 			 const CoinTreeSiblings* y) const {
-    register const CoinTreeNode* xNode = x->currentNode();
-    register const CoinTreeNode* yNode = y->currentNode();
+    const CoinTreeNode* xNode = x->currentNode();
+    const CoinTreeNode* yNode = y->currentNode();
     const BitVector128 xPref = xNode->getPreferred();
     const BitVector128 yPref = yNode->getPreferred();
     bool retval = true;
