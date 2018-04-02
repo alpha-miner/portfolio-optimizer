@@ -94,16 +94,16 @@ mkdir build
 cd build
 
 if [ "$BUILD_TEST" = "ON" ] ; then
-    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/.. -DTEST=ON .. $BUILD_OUTPUT 2>&1
-    make clean $BUILD_OUTPUT 2>&1
-    make -j${num_cores} $BUILD_OUTPUT 2>&1
+    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/.. -DTEST=ON .. >> $BUILD_OUTPUT 2>&1
+    make clean >> $BUILD_OUTPUT 2>&1
+    make -j${num_cores} >> $BUILD_OUTPUT 2>&1
 
     cd ../bin
     ./test_suite
 else
-    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/.. .. $BUILD_OUTPUT 2>&1
-    make clean $BUILD_OUTPUT 2>&1
-    make -j${num_cores} $BUILD_OUTPUT 2>&1
+    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/.. .. >> $BUILD_OUTPUT 2>&1
+    make clean >> $BUILD_OUTPUT 2>&1
+    make -j${num_cores} >> $BUILD_OUTPUT 2>&1
 
     if [ $? -ne 0 ] ; then
         exit 1
