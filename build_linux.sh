@@ -69,24 +69,31 @@ fi
 cd ../portfolio-optimizer
 mkdir build
 cd build
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/.. ..
-make clean
-make -j${num_cores}
 
-if [ $? -ne 0 ] ; then
-    exit 1
+if [ $BUILD_TEST$ = "ON" ] ; then
+    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/.. -DTEST=ON ..
+    make clean
+    make -j${num_cores}
+
+    if [ $? -ne 0 ] ; then
+        exit 1
+    fi
+
+    cd ../bin
+    ./test_suite
+else
+    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/.. -DTEST=ON ..
+    make clean
+    make -j${num_cores}
+
+    if [ $? -ne 0 ] ; then
+        exit 1
+    fi
 fi
-
-cd ../bin
-./test_suite
-
-if [ $? -ne 0 ] ; then
-    exit 1
-fi
-
-# copy necessary lib
 
 cd ../..
+
+# copy necessary lib
 
 if [ ! -d lib ]; then
     mkdir lib
