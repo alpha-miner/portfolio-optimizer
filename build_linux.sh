@@ -70,7 +70,7 @@ cd ../portfolio-optimizer
 mkdir build
 cd build
 
-if [ $BUILD_TEST$ = "ON" ] ; then
+if [ "$BUILD_TEST" = "ON" ] ; then
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/.. -DTEST=ON ..
     make clean
     make -j${num_cores}
@@ -82,7 +82,7 @@ if [ $BUILD_TEST$ = "ON" ] ; then
     cd ../bin
     ./test_suite
 else
-    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/.. -DTEST=ON ..
+    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/.. ..
     make clean
     make -j${num_cores}
 
