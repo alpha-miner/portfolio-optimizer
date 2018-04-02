@@ -5,10 +5,10 @@
 #define __CONFIG_COINUTILS_H__
 
 /* Define to 1 if stdint.h is available for CoinUtils */
-#define COINUTILS_HAS_STDINT_H 1
+/* #undef COINUTILS_HAS_STDINT_H */
 
 /* Define to 1 if stdint.h is available for CoinUtils */
-/* #undef COINUTILS_HAS_CSTDINT */
+#define COINUTILS_HAS_CSTDINT 1
 
 /* Version number of project */
 #define COINUTILS_VERSION "2.10"

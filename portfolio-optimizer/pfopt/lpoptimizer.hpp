@@ -3,7 +3,9 @@
 
 #include "types.hpp"
 #include <vector>
+#include <string>
 #include "coin/ClpSimplex.hpp"
+#include "coin/ClpInterior.hpp"
 
 namespace pfopt {
 
@@ -14,14 +16,16 @@ namespace pfopt {
                     double* constraintMatrix,
                     double* lowerBound,
                     double* upperBound,
-                    double* objective);
+                    double* objective,
+                    std::string method="simplex");
 
         std::vector<double> xValue() const { return sol_; }
         double feval() const;
-        int status() const { return model_.status(); }
+        int status() const { return status_; }
 
     private:
-        ClpSimplex model_;
+        int status_;
+        double feval_;
         size_t numberOfProb_;
         std::vector<double> sol_;
     };

@@ -31,22 +31,26 @@ if exist build (
 
 cd build
 
-cmake -G "Visual Studio 14 2015 Win64" -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ..
+if %BUILD_TEST% == ON (
+    cmake -G "Visual Studio 14 2015 Win64" -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DTEST=ON ..
+    if %errorlevel% neq 0 exit /b 1
 
-if %errorlevel% neq 0 exit /b 1
+    msbuild pfopt.sln /m /p:Configuration=%BUILD_TYPE% /p:Platform=x64
+    if %errorlevel% neq 0 exit /b 1
 
-msbuild pfopt.sln /m /p:Configuration=%BUILD_TYPE% /p:Platform=x64
+    cd ../bin
+    test_suite.exe
+    if %errorlevel% neq 0 exit /b 1
+    cd ../..
+) else (
+    echo Test Set is omitted
+    cmake -G "Visual Studio 14 2015 Win64" -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ..
+    if %errorlevel% neq 0 exit /b 1
 
-if %errorlevel% neq 0 exit /b 1
-
-cd ..
-
-cd bin
-test_suite.exe
-
-if %errorlevel% neq 0 exit /b 1
-
-cd ../..
+    msbuild pfopt.sln /m /p:Configuration=%BUILD_TYPE% /p:Platform=x64
+    if %errorlevel% neq 0 exit /b 1
+    cd ../..
+)
 
 if exist include (
   rmdir /s /q include

@@ -23,4 +23,5 @@ install:
   - sudo cp *.a /usr/lib
   - cd $CWD
 script:
+  - export BUILD_TEST=ON
   - bash build_linux.sh

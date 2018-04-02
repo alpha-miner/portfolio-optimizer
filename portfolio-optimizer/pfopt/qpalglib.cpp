@@ -2,44 +2,37 @@
 
 namespace  pfopt {
 
-    AlglibData::AlglibData(const std::vector<double> &expectReturn, const std::vector<double> &varMatrix, double riskAversion) {
-        int numOfAssets = expectReturn.size();
-        b_.setlength(numOfAssets);
-        a_.setlength(numOfAssets, numOfAssets);
+    AlglibData::AlglibData(int numAssets,
+                           const double* expectReturn,
+                           const double* varMatrix,
+                           const double* lbound,
+                           const double* ubound,
+                           double riskAversion) {
+        b_.setlength(numAssets);
+        a_.setlength(numAssets, numAssets);
 
-        for(size_t i=0; i != numOfAssets; ++i) {
+        for(size_t i=0; i != numAssets; ++i) {
             b_[i] = -expectReturn[i];
-            for(size_t j=0; j != numOfAssets; ++j)
-                a_[i][j]= riskAversion * varMatrix[i*numOfAssets + j];
+            for(size_t j=0; j != numAssets; ++j)
+                a_[i][j]= riskAversion * varMatrix[i*numAssets + j];
         }
+
+        bndl_.setlength(numAssets);
+        bndu_.setlength(numAssets);
+
+        for(size_t i=0; i != numAssets; ++i) {
+            bndl_[i] = lbound[i];
+            bndu_[i] = ubound[i];
+        }
+
         n_ = b_.length();
     }
-
-    real_1d_array AlglibData::b() const { return b_;}
-
-    real_2d_array AlglibData::a() const { return a_;}
 
     real_1d_array AlglibData::x0() const {
         real_1d_array x;
         x.setlength(n_);
         for(size_t i=0; i != n_; ++i)
             x[i] = 1. / n_;
-        return x;
-    }
-
-    real_1d_array AlglibData::bndl() const {
-        real_1d_array x;
-        x.setlength(n_);
-        for(size_t i=0; i != n_; ++i)
-            x[i] = 0.;
-        return x;
-    }
-
-    real_1d_array AlglibData::bndu() const {
-        real_1d_array x;
-        x.setlength(n_);
-        for(size_t i=0; i != n_; ++i)
-            x[i] = 0.01;
         return x;
     }
 
@@ -51,19 +44,28 @@ namespace  pfopt {
         return x;
     }
 
-    real_2d_array AlglibData::c() const {
-        real_2d_array x;
-        x.setlength(1, n_ + 1);
-        for(size_t i=0; i != n_ + 1; ++i)
-            x[0][i] = 1.;
-        return x;
-    }
+    QPAlglib::QPAlglib(int numAssets, const double *expectReturn, const double *varMatrix, const double *lbound,
+                       const double *ubound, double riskAversion)
+    :data_(numAssets, expectReturn, varMatrix, lbound, ubound, riskAversion) {
+        alglib::minqpstate state;
+        alglib::minqpreport rep;
 
-    integer_1d_array AlglibData::ct() const{
-        integer_1d_array x;
-        x.setlength(1);
-        x[0] = 0;
-        return x;
+        alglib::minqpcreate(data_.numAssets(), state);
+        alglib::minqpsetquadraticterm(state, data_.a());
+        alglib::minqpsetlinearterm(state, data_.b());
+        alglib::minqpsetstartingpoint(state, data_.x0());
+        alglib::minqpsetbc(state, data_.bndl(), data_.bndu());
+        alglib::minqpsetscale(state, data_.scale());
+
+        alglib::minqpsetalgoquickqp(state, 1e-8, 1e-8, 1e-8, 0, true);
+        alglib::minqpoptimize(state);
+        real_1d_array x;
+        alglib::minqpresults(state, x, rep);
+
+        for(size_t i=0; i != data_.numAssets(); ++i)
+            x_.push_back(x[i]);
+
+        status_ = rep.terminationtype;
     }
 }
 

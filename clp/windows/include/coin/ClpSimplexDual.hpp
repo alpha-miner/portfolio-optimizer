@@ -1,4 +1,4 @@
-/* $Id: ClpSimplexDual.hpp 1761 2011-07-06 16:06:24Z forrest $ */
+/* $Id: ClpSimplexDual.hpp 2294 2017-12-13 15:44:48Z forrest $ */
 // Copyright (C) 2002, International Business Machines
 // Corporation and others.  All Rights Reserved.
 // This code is licensed under the terms of the Eclipse Public License (EPL).
@@ -245,6 +245,8 @@ public:
      */
      int changeBounds(int initialize, CoinIndexedVector * outputArray,
                       double & changeCost);
+     /// Just checks if any fake bounds active - if so returns number
+     int checkFakeBounds() const;
      /** As changeBounds but just changes new bounds for a single variable.
          Returns true if change */
      bool changeBound( int iSequence);
