@@ -62,7 +62,7 @@ git submodule update
     ```
 
     * 会在 portfolio-optimizer/portfolio-optimizer/bin 文件夹下生成可执行文件;
-    * 在各个目录的lib下会生产需要动态链接库:*.lib;
+    * 在各个目录的lib下会生产需要静态库:*.lib;
 
 
 ### Ipopt Java接口
