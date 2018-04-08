@@ -4,15 +4,17 @@
 
 ## 依赖
 
+* git
 * cmake >= 2.8.0；
 * jdk >= 1.5（可选，仅当需要Ipopt Java接口的时候需要安装）；
 * gtest >= 1.7（可选，仅当需要运行单元测试的时候。打开或者关闭单元测试，请使用环境变量`BUILD_TEST`）。
+* c/c++编译器，例如Linux下的gcc或者windows下的msvc。如果在Linux下面，还需要fortran编译器，可以直接使用gfortran。
 
 ### Linux
 在Linux下，只需要如下命令即可完成除gtest以外依赖的安装：
 
 ```bash
-sudo apt-get install cmake openjdk-8-jdk libgtest-dev
+sudo apt-get install cmake openjdk-8-jdk libgtest-dev build-essential gfortran automake autoconf
 ```
 
 gtest在安装完成之后,还需要手动生产静态库文件。关于gtest在linux上的安装，请参考：[getting-started-with-google-test-on-ubuntu](https://www.eriksmistad.no/getting-started-with-google-test-on-ubuntu/)
@@ -23,8 +25,16 @@ gtest在安装完成之后,还需要手动生产静态库文件。关于gtest在
 
 * gtest 需要在``build_windows.bat``文件中设置``GTETS_ROOT``环境变量；
 
-## 获取代买
+## 获取代码
 
+在任意平台下，运行下列命令行指令，获取源代码以及相关的依赖项目：
+
+```
+git clone https://github.com/alpha-miner/portfolio-optimizer.git
+cd portfolio-optimizer
+git submodule init
+git submodule update
+```
 
 ## 安装
 
