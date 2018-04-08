@@ -4,9 +4,9 @@
 
 ## 依赖
 
-* cmake >= 2.8.0
-* jdk >= 1.5（可选，仅当需要Ipopt Java接口的时候需要安装）
-* gtest >= 1.7（可选，仅当需要运行单元测试的时候）
+* cmake >= 2.8.0；
+* jdk >= 1.5（可选，仅当需要Ipopt Java接口的时候需要安装）；
+* gtest >= 1.7（可选，仅当需要运行单元测试的时候。打开或者关闭单元测试，请使用环境变量`BUILD_TEST`）。
 
 ### Linux
 在Linux下，只需要如下命令即可完成除gtest以外依赖的安装：
@@ -23,12 +23,15 @@ gtest在安装完成之后,还需要手动生产静态库文件。关于gtest在
 
 * gtest 需要在``build_windows.bat``文件中设置``GTETS_ROOT``环境变量；
 
+## 获取代买
+
 
 ## 安装
 
 * Linux
 
     ```bash
+    export 
     ./build_linux.sh
     ```
 
