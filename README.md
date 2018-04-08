@@ -39,30 +39,32 @@ git submodule update
 ## 安装
 
 * Linux
-   
-   直接在命令行中运行
+   
+  * 直接在命令行中运行
 
-    ```bash
-    export BUILD_TEST=OFF
-    ./build_linux.sh
-    ```
+  ```bash
+  export BUILD_TEST=OFF
+  ./build_linux.sh
+  ```
 
-    * 会在 portfolio-optimizer/portfolio-optimizer/bin 文件夹下生成可执行文件;
-    * 在各个目录的lib下会生产需要动态链接库:*.so;
+  * 会在 portfolio-optimizer/portfolio-optimizer/bin 文件夹下生成可执行文件；
+  
+  * 在各个目录的lib下会生产需要动态链接库:*.so;
 
 * Windows
     
-    * 确保已经安装Visual Studio 2015，并进入VS2015的命令行；
-    
-    * 运行以下命令：
+  * 确保已经安装Visual Studio 2015，并进入VS2015的命令行；
 
-    ```bash
-    set BUILD_TEST=OFF
-    build_windows.bat
-    ```
+  * 运行以下命令：
 
-    * 会在 portfolio-optimizer/portfolio-optimizer/bin 文件夹下生成可执行文件;
-    * 在各个目录的lib下会生产需要静态库:*.lib;
+  ```bash
+  set BUILD_TEST=OFF
+  build_windows.bat
+  ```
+
+  * 会在 portfolio-optimizer/portfolio-optimizer/bin 文件夹下生成可执行文件;
+
+  * 在各个目录的lib下会生产需要静态库:*.lib;
 
 
 ### Ipopt Java接口
