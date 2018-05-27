@@ -22,7 +22,11 @@ namespace pfopt {
                     double* clb=nullptr,
                     double* cub= nullptr,
                     double targetVolLow=0.0,
-                    double targetVolHigh=1.0);
+                    double targetVolHigh=1.0,
+                    int numFactors=0,
+                    double* factorVarMatrix=nullptr,
+                    double* factorLoading=nullptr,
+                    double* idsync=nullptr);
         std::vector<double> xValue() const { return tvImpl_->xValue(); }
 
         double feval() const { return tvImpl_->feval(); }
@@ -36,7 +40,6 @@ namespace pfopt {
         Ipopt::ApplicationReturnStatus status_;
     };
 }
-
 
 
 #endif //PFOPT_TVOPTIMIZER_HPP

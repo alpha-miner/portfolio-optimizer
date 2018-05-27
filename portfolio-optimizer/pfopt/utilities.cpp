@@ -70,4 +70,10 @@ namespace pfopt {
             return false;
         return true;
     }
+
+    VectorXd calculate_grad(const VectorXd& w, const MatrixXd& factorLoading, const MatrixXd& factorVarMatrix, const VectorXd& idsync) {
+        VectorXd tmp = factorLoading.transpose() * w;
+        tmp = factorVarMatrix * tmp;
+        return (factorLoading * tmp).array() + idsync.array() * w.array();
+    }
 }

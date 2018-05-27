@@ -1,5 +1,6 @@
 #include "meanvariance.hpp"
 #include "utilities.hpp"
+#include <iostream>
 #include <numeric>
 
 namespace pfopt {
@@ -7,10 +8,23 @@ namespace pfopt {
     MeanVariance::MeanVariance(int numAssets,
                                double* expectReturn,
                                double* varMatrix,
-                               double riskAversion)
-        :numOfAssets_(numAssets), riskAversion_(riskAversion), feval_(0.) {
+                               double riskAversion,
+                               int numFactors,
+                               double* factorVarMatrix,
+                               double* factorLoading,
+                               double* idsync)
+        :numOfAssets_(numAssets), riskAversion_(riskAversion), feval_(0.), numFactors_(numFactors) {
         expectReturn_ = Map<VectorXd>(expectReturn, numOfAssets_);
-        varMatrix_ = Map<MatrixXd>(varMatrix, numOfAssets_, numOfAssets_);
+        if (varMatrix != nullptr) {
+            varMatrix_ = Map<MatrixXd>(varMatrix, numOfAssets_, numOfAssets_);
+            useFactorModel_ = false;
+        }
+        else if (factorVarMatrix != nullptr) {
+            factorVarMatrix_ = Map<MatrixXd>(factorVarMatrix, numFactors_, numFactors_);
+            factorLoading_ =  Map<Matrix<double , Dynamic, Dynamic, RowMajor> >(factorLoading, numOfAssets_, numFactors_);
+            idsync_ = Map<VectorXd>(idsync, numOfAssets_);
+            useFactorModel_ = true;
+        }
         lb_ = nullptr;
         ub_ = nullptr;
         numCons_ = 0;
@@ -74,7 +88,11 @@ namespace pfopt {
 
     bool MeanVariance::eval_f(Index n, const Number *x, bool new_x, Number &obj_value) {
         xReal_  = Map<VectorXd>(const_cast<Number *>(x), numOfAssets_);
-        grad_f_ = riskAversion_ * varMatrix_ * xReal_ - expectReturn_;
+        if(!useFactorModel_)
+            grad_f_ = riskAversion_ * varMatrix_ * xReal_ - expectReturn_;
+        else {
+            grad_f_ = riskAversion_ * calculate_grad(xReal_, factorLoading_, factorVarMatrix_, idsync_) - expectReturn_;
+        }
         obj_value = 0.5 * xReal_.dot(grad_f_ - expectReturn_);
         return true;
     }
@@ -82,7 +100,10 @@ namespace pfopt {
     bool MeanVariance::eval_grad_f(Index n, const Number *x, bool new_x, Number *grad_f) {
         if (new_x) {
             xReal_ = Map<VectorXd>(const_cast<Number *>(x), numOfAssets_);
-            grad_f_ = riskAversion_ * varMatrix_ * xReal_ - expectReturn_;
+            if(!useFactorModel_)
+                grad_f_ = riskAversion_ * varMatrix_ * xReal_ - expectReturn_;
+            else
+                grad_f_ = riskAversion_ * calculate_grad(xReal_, factorLoading_, factorVarMatrix_, idsync_) - expectReturn_;
             std::copy(&grad_f_.data()[0], &grad_f_.data()[0] + numOfAssets_, &grad_f[0]);
         }
         else

@@ -20,7 +20,11 @@ namespace pfopt {
         MeanVariance(int numAssets,
                      double* expectReturn,
                      double* varMatrix,
-                     double riskAversion=1.);
+                     double riskAversion=1.,
+                     int numFactors=0,
+                     double* factorVarMatrix=nullptr,
+                     double* factorLoading=nullptr,
+                     double* idsync=nullptr);
 
         bool setBoundedConstraint(const double* lb, const double* ub);
         bool setLinearConstrains(int numCons, const double* consMatrix, const double* clb, const double* cub);
@@ -59,6 +63,12 @@ namespace pfopt {
     private:
         VectorXd expectReturn_;
         MatrixXd varMatrix_;
+        int numFactors_;
+        MatrixXd factorVarMatrix_;
+        MatrixXd factorLoading_;
+        VectorXd idsync_;
+        bool useFactorModel_;
+
         const int numOfAssets_;
         int numCons_;
         VectorXd xReal_;
