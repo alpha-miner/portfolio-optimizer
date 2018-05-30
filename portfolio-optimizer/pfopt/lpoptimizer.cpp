@@ -39,8 +39,8 @@ namespace pfopt {
 
         starts.push_back(currentSize);
 
-        CoinPackedMatrix matrix_base(true, numberRows, numberColumns, currentSize, &elements[0], &rows[0], &starts[0], &lengths[0]);
-        ClpPackedMatrix matrix(matrix_base);
+        CoinPackedMatrix matrix(true, numberRows, numberColumns, currentSize, &elements[0], &rows[0], &starts[0], &lengths[0]);
+        //ClpPackedMatrix matrix(matrix_base);
 
         std::vector<double> rowLower;
         std::vector<double> rowUpper;
