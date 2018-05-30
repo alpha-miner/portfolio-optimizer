@@ -17,20 +17,20 @@ namespace pfopt {
 
         numberOfProb_ = numberColumns;
        
-        std::vector<int> cols;
+        std::vector<int> rows;
         std::vector<int> lengths;
         std::vector<CoinBigIndex> starts;
         std::vector<double> elements;
 
         size_t currentSize = 0;
 
-        for(int i=0; i != numberRows; ++i) {
+        for(int j=0; j != numberColumns; ++j) {
             starts.push_back(currentSize);
-            for(int j=0; j != numberColumns; ++j) {
+            for(int i=0; i != numberRows; ++i) {
                 double value = constraintMatrix[i*(numberColumns+2) + j];
                 if(!is_close(value, 0.)) {
                     elements.push_back(value);
-                    cols.push_back(j);
+                    rows.push_back(i);
                 }
             }
             lengths.push_back(elements.size() - currentSize);
@@ -39,7 +39,7 @@ namespace pfopt {
 
         starts.push_back(currentSize);
 
-        CoinPackedMatrix matrix_base(false, numberColumns, numberRows, currentSize, &elements[0], &cols[0], &starts[0], &lengths[0]);
+        CoinPackedMatrix matrix_base(true, numberRows, numberColumns, currentSize, &elements[0], &rows[0], &starts[0], &lengths[0]);
         ClpPackedMatrix matrix(matrix_base);
 
         std::vector<double> rowLower;
