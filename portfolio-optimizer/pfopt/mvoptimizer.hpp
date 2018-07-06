@@ -16,7 +16,11 @@ namespace pfopt {
                     double *consMatrix = nullptr,
                     double *clb = nullptr,
                     double *cub = nullptr,
-                    double riskAversion = 1.);
+                    double riskAversion = 1.,
+                    int numFactors=0,
+                    double* factorVarMatrix=nullptr,
+                    double* factorLoading=nullptr,
+                    double* idsync=nullptr);
 
         std::vector<double> xValue() const { return mvImpl_->xValue(); }
 

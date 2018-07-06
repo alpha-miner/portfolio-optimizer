@@ -13,7 +13,10 @@ namespace pfopt {
     double max(const real_1d_array& array, int n = 0);
     double sum(const real_1d_array& array, int n = 0);
 
-    bool is_close(double a, double b, double tol=1e-9);
+    bool is_close(double a, double b, double tol=1e-8);
+
+    VectorXd calculate_grad(const VectorXd& w, const MatrixXd& factorLoading, const MatrixXd& factorVarMatrix, const VectorXd& idsync);
+
 }
 
 #endif

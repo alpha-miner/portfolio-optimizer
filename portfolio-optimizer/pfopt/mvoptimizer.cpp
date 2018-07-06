@@ -11,9 +11,13 @@ namespace pfopt {
                              double* consMatrix,
                              double* clb,
                              double* cub,
-                             double riskAversion) {
+                             double riskAversion,
+                             int numFactors,
+                             double* factorVarMatrix,
+                             double* factorLoading,
+                             double* idsync) {
         
-        mvImpl_ = new MeanVariance(numAssets, expectReturn, varMatrix, riskAversion);
+        mvImpl_ = new MeanVariance(numAssets, expectReturn, varMatrix, riskAversion, numFactors, factorVarMatrix, factorLoading, idsync);
         mvImpl_->setBoundedConstraint(lbound, ubound);
 
         if(numCons > 0 && consMatrix != nullptr) {

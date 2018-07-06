@@ -1,6 +1,7 @@
 #include "lpoptimizer.hpp"
 #include "utilities.hpp"
 #include "coin/ClpCholeskyMumps.hpp"
+#include "coin/ClpPackedMatrix.hpp"
 
 namespace pfopt {
     LpOptimizer::LpOptimizer(int numVariables,
@@ -39,6 +40,7 @@ namespace pfopt {
         starts.push_back(currentSize);
 
         CoinPackedMatrix matrix(true, numberRows, numberColumns, currentSize, &elements[0], &rows[0], &starts[0], &lengths[0]);
+        //ClpPackedMatrix matrix(matrix_base);
 
         std::vector<double> rowLower;
         std::vector<double> rowUpper;

@@ -24,7 +24,11 @@ namespace pfopt {
         TargetVol(int numAssets,
                   double* expectReturn,
                   double* varMatrix,
-                  double targetVol);
+                  double targetVol,
+                  int numFactors=0,
+                  double* factorVarMatrix=nullptr,
+                  double* factorLoading=nullptr,
+                  double* idsync=nullptr);
 
         bool setBoundedConstraint(const double* lb, const double* ub);
         bool setLinearConstrains(int numCons, const double* consMatrix, const double* clb, const double* cub);
@@ -60,6 +64,12 @@ namespace pfopt {
     private:
         VectorXd expectReturn_;
         MatrixXd varMatrix_;
+        int numFactors_;
+        MatrixXd factorVarMatrix_;
+        MatrixXd factorLoading_;
+        VectorXd idsync_;
+        bool useFactorModel_;
+
         const double targetVol_;
         const int numOfAssets_;
         int numCons_;

@@ -7,11 +7,16 @@
 namespace pfopt {
 
     TVOptimizer::TVOptimizer(int numAssets, double *expectReturn, double *varMatrix, double *lbound, double *ubound,
-                             int numCons, double *consMatrix, double *clb, double *cub, double targetVol) {
-        tvImpl_ = new TargetVol(numAssets, expectReturn, varMatrix, targetVol);
+                             int numCons, double *consMatrix, double *clb, double *cub,
+                             double targetVol,
+                             int numFactors,
+                             double *factorVarMatrix,
+                             double *factorLoading,
+                             double *idsync) {
+        tvImpl_ = new TargetVol(numAssets, expectReturn, varMatrix, targetVol, numFactors, factorVarMatrix, factorLoading, idsync);
         tvImpl_->setBoundedConstraint(lbound, ubound);
 
-        if(numCons > 0 && consMatrix != nullptr)
+        if (numCons > 0 && consMatrix != nullptr)
             tvImpl_->setLinearConstrains(numCons, consMatrix, clb, cub);
 
         app_ = IpoptApplicationFactory();
@@ -22,5 +27,4 @@ namespace pfopt {
         app_->Initialize();
         status_ = app_->OptimizeTNLP(tvImpl_);
     }
-
 }

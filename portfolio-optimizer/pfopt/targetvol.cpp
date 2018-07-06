@@ -10,10 +10,23 @@ namespace pfopt {
     TargetVol::TargetVol(int numAssets,
                          double* expectReturn,
                          double* varMatrix,
-                         double targetVol)
-            :numOfAssets_(numAssets), targetVol_(targetVol) {
+                         double targetVol,
+                         int numFactors,
+                         double* factorVarMatrix,
+                         double* factorLoading,
+                         double* idsync)
+            :numOfAssets_(numAssets), targetVol_(targetVol), numFactors_(numFactors) {
         expectReturn_ = Map<VectorXd>(expectReturn, numOfAssets_);
-        varMatrix_ = Map<MatrixXd>(varMatrix, numOfAssets_, numOfAssets_);
+        if (varMatrix != nullptr) {
+            varMatrix_ = Map<MatrixXd>(varMatrix, numOfAssets_, numOfAssets_);
+            useFactorModel_ = false;
+        }
+        else if (factorVarMatrix != nullptr) {
+            factorVarMatrix_ = Map<MatrixXd>(factorVarMatrix, numFactors_, numFactors_);
+            factorLoading_ =  Map<Matrix<double, Dynamic, Dynamic, RowMajor> >(factorLoading, numOfAssets_, numFactors_);
+            idsync_ = Map<VectorXd>(idsync, numOfAssets_);
+            useFactorModel_ = true;
+        }
         lb_ = nullptr;
         ub_ = nullptr;
         numCons_ = 1;
@@ -101,7 +114,10 @@ namespace pfopt {
             g[i] = 0.;
         }
 
-        g[0] = 0.5 * xReal_.dot(varMatrix_ * xReal_);
+        if(!useFactorModel_)
+            g[0] = 0.5 * xReal_.dot(varMatrix_ * xReal_);
+        else
+            g[0] = 0.5 * xReal_.dot(calculate_grad(xReal_, factorLoading_, factorVarMatrix_, idsync_));
         if(m > 1) {
             for (auto i = 0; i != iRow_.size(); ++i) {
                 g[iRow_[i]] += x[jCol_[i]] * g_grad_values_[i];
@@ -125,7 +141,12 @@ namespace pfopt {
         }
         else {
             xReal_ = Map<VectorXd>(const_cast<Number *>(x), numOfAssets_);
-            VectorXd gg = varMatrix_ * xReal_;
+            VectorXd gg;
+            if(!useFactorModel_)
+                gg = varMatrix_ * xReal_;
+            else
+                gg = calculate_grad(xReal_, factorLoading_, factorVarMatrix_, idsync_);
+
             for(auto i=0; i!=n; ++i)
                 values[i] = gg[i];
             if(m > 1) {
