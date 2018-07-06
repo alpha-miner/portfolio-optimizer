@@ -21,8 +21,7 @@ namespace pfopt {
                     double* consMatrix=nullptr,
                     double* clb=nullptr,
                     double* cub= nullptr,
-                    double targetVolLow=0.0,
-                    double targetVolHigh=1.0);
+                    double targetVol=1.0);
         std::vector<double> xValue() const { return tvImpl_->xValue(); }
 
         double feval() const { return tvImpl_->feval(); }

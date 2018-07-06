@@ -65,7 +65,7 @@ namespace pfopt {
         bool init_z, Number *z_L, Number *z_U,
         Index m, bool init_lambda,
         Number *lambda) {
-        auto startWeight = 1. / numOfAssets_;
+        auto startWeight = 0.;
         for (auto i = 0; i < numOfAssets_; ++i) {
             x[i] = startWeight;
         }

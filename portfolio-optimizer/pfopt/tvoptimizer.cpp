@@ -7,8 +7,8 @@
 namespace pfopt {
 
     TVOptimizer::TVOptimizer(int numAssets, double *expectReturn, double *varMatrix, double *lbound, double *ubound,
-                             int numCons, double *consMatrix, double *clb, double *cub, double targetVolLow, double targetVolHigh) {
-        tvImpl_ = new TargetVol(numAssets, expectReturn, varMatrix, targetVolLow, targetVolHigh);
+                             int numCons, double *consMatrix, double *clb, double *cub, double targetVol) {
+        tvImpl_ = new TargetVol(numAssets, expectReturn, varMatrix, targetVol);
         tvImpl_->setBoundedConstraint(lbound, ubound);
 
         if(numCons > 0 && consMatrix != nullptr)

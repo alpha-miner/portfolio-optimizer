@@ -24,8 +24,7 @@ namespace pfopt {
         TargetVol(int numAssets,
                   double* expectReturn,
                   double* varMatrix,
-                  double targetVolLow,
-                  double targetVolHigh);
+                  double targetVol);
 
         bool setBoundedConstraint(const double* lb, const double* ub);
         bool setLinearConstrains(int numCons, const double* consMatrix, const double* clb, const double* cub);
@@ -61,8 +60,7 @@ namespace pfopt {
     private:
         VectorXd expectReturn_;
         MatrixXd varMatrix_;
-        const double targetVolLow_;
-        const double targetVolHigh_;
+        const double targetVol_;
         const int numOfAssets_;
         int numCons_;
         VectorXd xReal_;

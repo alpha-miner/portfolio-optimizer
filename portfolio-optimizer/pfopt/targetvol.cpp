@@ -10,9 +10,8 @@ namespace pfopt {
     TargetVol::TargetVol(int numAssets,
                          double* expectReturn,
                          double* varMatrix,
-                         double targetVolLow,
-                         double targetVolHigh)
-            :numOfAssets_(numAssets), targetVolLow_(targetVolLow), targetVolHigh_(targetVolHigh) {
+                         double targetVol)
+            :numOfAssets_(numAssets), targetVol_(targetVol) {
         expectReturn_ = Map<VectorXd>(expectReturn, numOfAssets_);
         varMatrix_ = Map<MatrixXd>(varMatrix, numOfAssets_, numOfAssets_);
         lb_ = nullptr;
@@ -58,8 +57,8 @@ namespace pfopt {
                                        Index m, Number *g_l, Number *g_u) {
         std::copy(&lb_[0], &lb_[0] + n, &x_l[0]);
         std::copy(&ub_[0], &ub_[0] + n, &x_u[0]);
-        g_l[0] = 0.5 * targetVolLow_ * targetVolLow_;
-        g_u[0] = 0.5 * targetVolHigh_ * targetVolHigh_;
+        g_l[0] = -1.e8;
+        g_u[0] = 0.5 * targetVol_ * targetVol_;
         if (m > 1) {
             std::copy(&clb_[0], &clb_[0] + m - 1, &g_l[0] + 1);
             std::copy(&cub_[0], &cub_[0] + m - 1, &g_u[0] + 1);
