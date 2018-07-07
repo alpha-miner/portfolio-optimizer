@@ -7,6 +7,7 @@
 
 #include "targetvol.hpp"
 #include <coin/IpIpoptApplication.hpp>
+#include <string>
 
 namespace pfopt {
 
@@ -25,7 +26,8 @@ namespace pfopt {
                     int numFactors=0,
                     double* factorVarMatrix=nullptr,
                     double* factorLoading=nullptr,
-                    double* idsync=nullptr);
+                    double* idsync=nullptr,
+                    std::string linearSolver="ma27");
         std::vector<double> xValue() const { return tvImpl_->xValue(); }
 
         double feval() const { return tvImpl_->feval(); }

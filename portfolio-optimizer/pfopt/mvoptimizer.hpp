@@ -3,6 +3,7 @@
 
 #include "meanvariance.hpp"
 #include <coin/IpIpoptApplication.hpp>
+#include <string>
 
 namespace pfopt {
     class MVOptimizer {
@@ -20,7 +21,8 @@ namespace pfopt {
                     int numFactors=0,
                     double* factorVarMatrix=nullptr,
                     double* factorLoading=nullptr,
-                    double* idsync=nullptr);
+                    double* idsync=nullptr,
+                    std::string linearSolver="ma27");
 
         std::vector<double> xValue() const { return mvImpl_->xValue(); }
 
