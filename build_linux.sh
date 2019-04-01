@@ -196,11 +196,11 @@ cd Ipopt/contrib/JavaInterface
 export CLASSPATH=$PWD:$CLASSPATH
 export CPLUS_INCLUDE_PATH=$JAVA_HOME/include/linux
 
-if [ "$REDIRECT" = "ON" ] ; then
-    make >> $BUILD_OUTPUT 2>&1
-else
-    make
-fi
+#if [ "$REDIRECT" = "ON" ] ; then
+#    make >> $BUILD_OUTPUT 2>&1
+#else
+#    make
+#fi
 
 if [ $? -ne 0 ] ; then
     exit 1
