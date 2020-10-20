@@ -1,7 +1,7 @@
 @echo off
 
 set BUILD_TYPE=Release
-set GTEST_ROOT=d:\dev\googletest-release-1.8.0\googletest
+set GTEST_ROOT=d:\dev\googletest-release-1.10.0\googletest
 
 cd alglib
 
@@ -13,7 +13,7 @@ if exist build (
 
 cd build
 
-cmake -G "Visual Studio 14 2015 Win64" -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ..
+cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ..
 
 if %errorlevel% neq 0 exit /b 1
 
@@ -32,7 +32,7 @@ if exist build (
 cd build
 
 if %BUILD_TEST% == ON (
-    cmake -G "Visual Studio 14 2015 Win64" -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DTEST=ON ..
+    cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DTEST=ON ..
     if %errorlevel% neq 0 exit /b 1
 
     msbuild pfopt.sln /m /p:Configuration=%BUILD_TYPE% /p:Platform=x64
@@ -44,7 +44,7 @@ if %BUILD_TEST% == ON (
     cd ../..
 ) else (
     echo Test Set is omitted
-    cmake -G "Visual Studio 14 2015 Win64" -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ..
+    cmake -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ..
     if %errorlevel% neq 0 exit /b 1
 
     msbuild pfopt.sln /m /p:Configuration=%BUILD_TYPE% /p:Platform=x64
