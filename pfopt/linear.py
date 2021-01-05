@@ -63,7 +63,7 @@ class LpOptimizer(_ILpOptimizer):
         x, constraints = self._prepare()
         prob = cp.Problem(cp.Minimize(x @ self._cost), constraints=constraints)
         prob.solve(solver=solver)
-        return x.value, prob.value
+        return x.value, prob.value, prob.status
 
 
 class L1LpOptimizer(_ILpOptimizer):
@@ -86,4 +86,4 @@ class L1LpOptimizer(_ILpOptimizer):
         )
         prob = cp.Problem(cp.Minimize(x @ self._cost), constraints=constraints)
         prob.solve(solver=solver)
-        return x.value, prob.value
+        return x.value, prob.value, prob.status
