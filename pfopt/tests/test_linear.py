@@ -15,15 +15,15 @@ def test_lpoptimizer():
     lower_bound = np.ones(n) * 0.0
     upper_bound = np.ones(n) * 0.2
     constraints = np.zeros((1, n + 2))
-    expectation = np.zeros(n)
+    cost = np.zeros(n)
 
     for i in range(n):
-        expectation[i] = float(i)
+        cost[i] = float(i)
         constraints[0, i] = 1.
     constraints[0, n] = 1.
     constraints[0, n + 1] = 1.0
 
-    optimizer = LpOptimizer(expectation, constraints, lower_bound, upper_bound)
+    optimizer = LpOptimizer(cost, constraints, lower_bound, upper_bound)
     x, f_eval = optimizer.solve()
 
     pytest.approx(f_eval, 2., 1e-8)

@@ -34,9 +34,9 @@ def cvxpy_lp(n):
     constraints = np.concatenate((risk_constraints1, risk_constraints2), axis=1).T
 
     np.random.seed(1)
-    er = np.random.randn(n)
+    cost = np.random.randn(n)
 
-    optimizer = LpOptimizer(er, constraints, lower_bound, upper_bound)
+    optimizer = LpOptimizer(cost, constraints, lower_bound, upper_bound)
     return optimizer.solve(solver="CBC")
 
 
