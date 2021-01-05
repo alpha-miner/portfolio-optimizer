@@ -1,7 +1,8 @@
 @echo off
 
+set BUILD_TEST=ON
 set BUILD_TYPE=Release
-set GTEST_ROOT=d:\dev\googletest-release-1.10.0\googletest
+set GTEST_ROOT=D:\dev\googletest-1.10.0
 
 cd alglib
 
