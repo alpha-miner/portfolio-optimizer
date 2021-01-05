@@ -5,27 +5,27 @@ Created on 2021-01-05
 @author: cheng.li
 """
 
+import abc
 from typing import Union
 import cvxpy as cp
 import numpy as np
 from simpleutils.asserts import require
 
 
-class LpOptimizer:
+class _ILpOptimizer(abc.ABC):
 
     def __init__(self,
                  expectation: np.ndarray,
                  cons_matrix: np.ndarray = None,
                  lower_bound: Union[float, np.ndarray] = None,
                  upper_bound: Union[float, np.ndarray] = None):
-
         self._n = len(expectation)
         self._cons_matrix = cons_matrix
         self._lower_bound = lower_bound
         self._upper_bound = upper_bound
         self._expectation = expectation
 
-    def solve(self, solver: str = "CBC"):
+    def _prepare(self):
         x = cp.Variable(self._n)
         constraints = []
         if self._lower_bound is not None:
@@ -47,6 +47,43 @@ class LpOptimizer:
             constraints.append(self._cons_matrix[:, :self._n] @ x >= self._cons_matrix[:, self._n])
             constraints.append(self._cons_matrix[:, :self._n] @ x <= self._cons_matrix[:, self._n + 1])
 
+        return x, constraints
+
+
+class LpOptimizer(_ILpOptimizer):
+
+    def __init__(self,
+                 expectation: np.ndarray,
+                 cons_matrix: np.ndarray = None,
+                 lower_bound: Union[float, np.ndarray] = None,
+                 upper_bound: Union[float, np.ndarray] = None):
+        super().__init__(expectation, cons_matrix, lower_bound, upper_bound)
+
+    def solve(self, solver: str = "CBC"):
+        x, constraints = self._prepare()
+        prob = cp.Problem(cp.Minimize(x @ self._expectation), constraints=constraints)
+        prob.solve(solver=solver)
+        return x.value, prob.value
+
+
+class L1LpOptimizer(_ILpOptimizer):
+
+    def __init__(self,
+                 expectation: np.ndarray,
+                 benchmark: np.ndarray,
+                 l1norm: float,
+                 cons_matrix: np.ndarray = None,
+                 lower_bound: Union[float, np.ndarray] = None,
+                 upper_bound: Union[float, np.ndarray] = None):
+        super().__init__(expectation, cons_matrix, lower_bound, upper_bound)
+        self._benchmark = benchmark
+        self._l1norm = l1norm
+
+    def solve(self, solver: str = "ECOS"):
+        x, constraints = self._prepare()
+        constraints.append(
+            cp.pnorm(x - self._benchmark, 1) <= self._l1norm
+        )
         prob = cp.Problem(cp.Minimize(x @ self._expectation), constraints=constraints)
         prob.solve(solver=solver)
         return x.value, prob.value
