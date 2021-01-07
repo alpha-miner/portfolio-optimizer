@@ -26,7 +26,7 @@ class QOptimizer(_IOptimizer):
 
     def solve(self, solver: str = "ECOS"):
         x, constraints = self._prepare()
-        prob = cp.Problem(cp.Minimize(x @ self._cost - 0.5 * self._penalty * cp.quad_form(x, self._variance)),
+        prob = cp.Problem(cp.Minimize(x @ self._cost + 0.5 * self._penalty * cp.quad_form(x, self._variance)),
                           constraints=constraints)
         prob.solve(solver=solver)
         return x.value, prob.value, prob.status
@@ -53,7 +53,7 @@ class DecomposedQOptimizer(_IOptimizer):
         x, constraints = self._prepare()
         risk = cp.sum_squares(cp.multiply(self._factor_special, x)) \
                + cp.quad_form((x.T * self._factor_load).T, self._factor_var)
-        prob = cp.Problem(cp.Minimize(x @ self._cost - 0.5 * risk),
+        prob = cp.Problem(cp.Minimize(x @ self._cost + 0.5 * self._penalty * risk),
                           constraints=constraints)
         prob.solve(solver=solver)
         return x.value, prob.value, prob.status
