@@ -39,6 +39,7 @@ def test_lpoptimizer():
 
 def test_l1lpoptimizer():
     n = 300
+    np.random.seed(42)
     cost = np.random.randn(n)
     risk_exp = np.random.randn(n, 30)
     risk_exp = np.concatenate([risk_exp, np.ones((n, 1))], axis=1)
