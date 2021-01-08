@@ -9,6 +9,7 @@ from typing import Union
 import cvxpy as cp
 import numpy as np
 from pfopt.base import _IOptimizer
+from simpleutils.asserts import require
 
 
 class QOptimizer(_IOptimizer):
@@ -54,6 +55,47 @@ class DecomposedQOptimizer(_IOptimizer):
         risk = cp.sum_squares(cp.multiply(np.sqrt(self._factor_special), x)) \
                + cp.quad_form((x.T @ self._factor_load).T, self._factor_var)
         prob = cp.Problem(cp.Minimize(x @ self._cost + 0.5 * self._penalty * risk),
+                          constraints=constraints)
+        prob.solve(solver=solver)
+        return x.value, prob.value, prob.status
+
+
+class TargetVarianceOptimizer(_IOptimizer):
+
+    def __init__(self,
+                 cost: np.ndarray,
+                 vol_target: float,
+                 factor_var: np.ndarray = None,
+                 factor_load: np.ndarray = None,
+                 factor_special: np.ndarray = None,
+                 variance: np.ndarray = None,
+                 cons_matrix: np.ndarray = None,
+                 lower_bound: Union[float, np.ndarray] = None,
+                 upper_bound: Union[float, np.ndarray] = None):
+        super().__init__(cost, cons_matrix, lower_bound, upper_bound)
+        require(factor_var is not None or variance is not None,
+                ValueError,
+                "factor var or total var should not all be empty")
+        if factor_var is not None:
+            self._factor_var = factor_var
+            self._factor_load = factor_load
+            self._factor_special = factor_special
+            self._use_factor = True
+        else:
+            self._variance = variance
+            self._use_factor = False
+        require(vol_target >= 0, ValueError, "variance target can't be negative")
+        self._vol = vol_target
+
+    def solve(self, solver: str = "ECOS"):
+        x, constraints = self._prepare()
+        if self._use_factor:
+            risk = cp.sum_squares(cp.multiply(np.sqrt(self._factor_special), x)) \
+                   + cp.quad_form((x.T @ self._factor_load).T, self._factor_var)
+        else:
+            risk = cp.quad_form(x, self._variance)
+        constraints.append(risk <= self._vol)
+        prob = cp.Problem(cp.Minimize(x @ self._cost),
                           constraints=constraints)
         prob.solve(solver=solver)
         return x.value, prob.value, prob.status
