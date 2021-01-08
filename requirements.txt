@@ -1,4 +1,7 @@
+coverage
 cvxpy
 cylp
 numpy
-pytest
+pytestc
+pytest-runner
+simpleutils
