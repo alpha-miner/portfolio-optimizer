@@ -7,7 +7,7 @@ python:
   - "3.9"
 dist: bionic
 install:
-  - sudo apt-get install coinor-cbc coin-or-libcbc-dev -y
+  - sudo apt-get install coinor-cbc coinor-libcbc-dev -y
   - pip install -r requirements.txt
 script:
   - export PYTHONPATH=$(pwd):$PYTHONPATH
