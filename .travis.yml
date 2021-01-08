@@ -8,6 +8,7 @@ dist: bionic
 install:
   - sudo apt-get install coinor-cbc coinor-libcbc-dev -y
   - pip install -r requirements.txt
+  - pip install coveralls --ignore-installed
 script:
   - export PYTHONPATH=$(pwd):$PYTHONPATH
   - coverage run --rcfile=./.coveragerc setup.py test
