@@ -64,7 +64,7 @@ class TargetVarianceOptimizer(_IOptimizer):
 
     def __init__(self,
                  cost: np.ndarray,
-                 vol_target: float,
+                 variance_target: float,
                  factor_var: np.ndarray = None,
                  factor_load: np.ndarray = None,
                  factor_special: np.ndarray = None,
@@ -84,8 +84,8 @@ class TargetVarianceOptimizer(_IOptimizer):
         else:
             self._variance = variance
             self._use_factor = False
-        require(vol_target >= 0, ValueError, "variance target can't be negative")
-        self._vol = vol_target
+        require(variance_target >= 0, ValueError, "variance target can't be negative")
+        self._var_target = variance_target
 
     def solve(self, solver: str = "ECOS"):
         x, constraints = self._prepare()
@@ -94,7 +94,7 @@ class TargetVarianceOptimizer(_IOptimizer):
                    + cp.quad_form((x.T @ self._factor_load).T, self._factor_var)
         else:
             risk = cp.quad_form(x, self._variance)
-        constraints.append(risk <= self._vol)
+        constraints.append(risk <= self._var_target)
         prob = cp.Problem(cp.Minimize(x @ self._cost),
                           constraints=constraints)
         prob.solve(solver=solver)
