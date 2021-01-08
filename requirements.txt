@@ -2,6 +2,6 @@ coverage
 cvxpy
 cylp
 numpy
-pytestc
+pytest
 pytest-runner
 simpleutils
