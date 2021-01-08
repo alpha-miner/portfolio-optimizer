@@ -1,6 +1,5 @@
 coverage
 cvxpy
-cylp
 numpy
 pytest
 pytest-runner
