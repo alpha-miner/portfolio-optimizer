@@ -1,5 +1,0 @@
-add_subdirectory(loadcsv)
-add_subdirectory(meanvariance)
-add_subdirectory(qpalglib)
-add_subdirectory(lpoptimizer)
-add_subdirectory(utilities)
