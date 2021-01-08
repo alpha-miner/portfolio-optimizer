@@ -12,5 +12,6 @@ script:
   - export PYTHONPATH=$(pwd):$PYTHONPATH
   - coverage run --rcfile=./.coveragerc setup.py test
   - coverage report --rcfile=./.coveragerc -i
+  - coverage html --rcfile=./.coveragerc -i
 after_success:
   - coveralls
