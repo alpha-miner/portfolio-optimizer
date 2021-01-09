@@ -28,3 +28,17 @@ Potfolio - ~optimizer由于有大量的c++代码，造成其使用困难。对�
 - [x] 提供完整的python接口；
 - [x] 作为标准的python包在pypi上发布；
 - [ ] 增加多期优化的能力。
+
+### 安装
+
+* PYPI
+
+```bash
+$ pip install portfolio-optimizer
+```
+
+* Source
+
+```bash
+$ python setup.py install
+```
